@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Status;
+use App\User;
 use Illuminate\Http\Request;
+use LetsAds;
 
 class OrderController extends Controller
 {
@@ -12,9 +15,17 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+//        LetsAds::send('hello', env('LETSADS_SENDER'), '380637174385');
+        $orders = Order::with(['user', 'status', 'client', 'service', 'outsource'])
+                        ->orderByDesc('id')->paginate(50);
+        return view('order.index', [
+            'statuses' => Status::all()->pluck('name', 'id')->toArray(),
+            'users' => User::all(),
+            'orders' => $orders,
+            'request' => $request,
+        ]);
     }
 
     /**
