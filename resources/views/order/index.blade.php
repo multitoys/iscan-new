@@ -144,7 +144,7 @@
             <td>{{ $order->comment }}</td>
             <td>@if($order->is_files) <span class="glyphicon glyphicon-ok"></span> @endif</td>
             <td>{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</td>
-            <td>{{ $order->date }}</td>
+            <td>{{ \Carbon::parse($order->date_end)->format('d.m.Y H:i') }}</td>
             <td>{{ isset($order->user) ? $order->user->full_name : '' }}</td>
             <td><div class="{{ isset($order->sms1) ? 'true' : 'false' }}"></div></td>
             <td><div class="{{ isset($order->sms2) ? 'true' : 'false' }}"></div></td>

@@ -283,12 +283,14 @@ $(function () {
     $('span.del-file').on('click', function () {
         var fileLi  = $(this).parents('li');
         var file    = fileLi.find('a').text();
-        var order   = $('#order').val();
         if (confirm('Удалить файл ' + file)) {
             $.ajax({
                 type: "POST",
-                url: "/includes/file.php",
-                data: {file: file, order: order},
+                url: fileLi.attr('data-delete'),
+                data:{
+                    _token: $('[name="_token"]').val(),
+                    _method: 'DELETE',
+                },
                 dataType: 'json',
                 cache: false,
                 success: function (response) {
@@ -322,16 +324,16 @@ function getFileParam() {
     }
 }
 $(document).ready(function () {
-	if ($('[name="status"]').val() == 'На производстве') {
-		$('[name="outsource"]').show(100);
+	if ($('[name="status_id"]').val() == 4) {
+		$('[name="outsource_id"]').show(100);
 	} else {
-		$('[name="outsource"]').hide();
+		$('[name="outsource_id"]').hide();
 	}
-	$('[name="status"]').on('change', function () {
-		if ($(this).val() == 'На производстве') {
-			$('[name="outsource"]').show(100);
+	$('[name="status_id"]').on('change', function () {
+		if ($(this).val() == 4) {
+			$('[name="outsource_id"]').show(100);
 		} else {
-			$('[name="outsource"]').hide(100);
+			$('[name="outsource_id"]').hide(100);
 		}
 	});
 });

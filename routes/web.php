@@ -21,5 +21,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('paper', 'PaperController');
     Route::resource('service', 'ServiceController');
     Route::resource('status', 'StatusController');
+
+    Route::get('order/download/{order}/{file}', 'OrderController@downloadFile')->name('order.download_file');
+    Route::delete('order/delete/{order}/{file}', 'OrderController@deleteFile')->name('order.delete_file');
     Route::resource('order', 'OrderController');
 });

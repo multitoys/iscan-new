@@ -3,6 +3,7 @@
 <head>
     <title>Заказ</title>
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datepicker.css') }}" rel="stylesheet">
     <style type="text/css">
         body {
             padding-top: 20px;
@@ -136,7 +137,7 @@
     </style>
     <!-- Bootstrap -->
     <script src="http://code.jquery.com/jquery-latest.js" defer></script>
-    <script src="{{ asset('js/datepicker.min.js') }}" defer></script>
+    <script src="{{ asset('js/datepicker.js') }}" defer></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -151,7 +152,7 @@
             <div class="col-xs-1"><b class="order-id">{{ $order->id }}</b></div>
             <div class="col-xs-2">Оператор</div>
             <div class="col-xs-3">
-                <select name="operator" class="form-control">
+                <select name="user_id" class="form-control">
                     <option value="">Выбор оператора</option>
                     @foreach ($users as $user)
                     <option value="{{ $user->id }}" {{ $order->user_id == $user->id ? 'selected' : ''}}>{{ $user->full_name }}</option>
@@ -160,12 +161,12 @@
             </div>
             <div class="col-xs-1">Статус заказа</div>
             <div class="col-xs-3">
-                <select name="status" class="form-control">
+                <select name="status_id" class="form-control">
                     @foreach ($statuses as $status)
                     <option value="{{ $status->id }}" {{ $order->status_id == $status->id ? 'selected' : ''}}>{{ $status->name }}</option>
                     @endforeach
                 </select>
-                <select name="outsource" class="form-control" style="display:none;">
+                <select name="outsource_id" class="form-control" style="display:none;">
                     <option value="">Выберите производство</option>
                     @foreach ($outsources as $outsource)
                     <option value="{{ $outsource->id }}" {{ $order->outsource_id == $outsource->id ? 'selected' : ''}}>{{ $outsource->code }}</option>
@@ -173,13 +174,13 @@
                 </select>
             </div>
         </div>
-        {{ dd() }}
         <hr>
         <div class="row">
             <div class="col-xs-1">Заказчик</div>
             <div class="col-xs-3">
+                <input type="hidden" name="client_id" value="{{ $order->client_id ?? '' }}">
                 <input name="client" id="client" type="text" class="form-control"
-                       value="<?php if (isset($order['client'])): ?><?= $order['client'] ?><?php endif; ?>"
+                       value="{{ $order->client->name ?? '' }}"
                        autocomplete="off">
                 <div id="search_results3"></div>
             </div>
@@ -188,7 +189,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">38</span>
                     <input name="phone" id="phone" type="tel" class="form-control"
-                           value="<?php if (isset($order['phone'])): ?><?= $order['phone'] ?><?php endif; ?>"
+                           value="{{ $order->client->phone ?? '' }}"
                            autocomplete="off">
                     <div id="search_results"></div>
                 </div>
@@ -198,7 +199,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">@</span>
                     <input name="email" id="email" type="text" class="form-control"
-                           value="<?php if (isset($order['email'])): ?><?= $order['email'] ?><?php endif; ?>"
+                           value="{{ $order->client->email ?? '' }}"
                            autocomplete="off">
                     <div id="search_results2"></div>
                 </div>
@@ -207,17 +208,17 @@
         <hr>
         <div class="row">
             <div class="col-xs-3">Дата принятия заказа</div>
-            <div class="col-xs-3"><?php if (isset($order['date_create'])): ?><?= substr($order['date_create'], 0, -3) ?><?php endif; ?></div>
+            <div class="col-xs-3">{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</div>
             <div class="col-xs-3">Способ оплаты</div>
             <div class="col-xs-3">
-                <select name="pay" class="form-control">
-                    <option value="Наличные"<?php if (isset($order['pay']) && $order['pay'] == "Наличные"): ?> selected<?php endif; ?>>
+                <select name="pay_type" class="form-control">
+                    <option value="1" {{ $order->pay_type == 1 ? 'selected' : '' }}>
                         Наличные
                     </option>
-                    <option value="Счёт б/н"<?php if (isset($order['pay']) && $order['pay'] == "Счёт"): ?> selected<?php endif; ?>>
+                    <option value="2" {{ $order->pay_type == 2 ? 'selected' : '' }}>
                         Счёт
                     </option>
-                    <option value="Карта"<?php if (isset($order['pay']) && $order['pay'] == "Карта"): ?> selected<?php endif; ?>>
+                    <option value="3" {{ $order->pay_type == 3 ? 'selected' : '' }}>
                         Карта
                     </option>
                 </select>
@@ -226,8 +227,8 @@
         <div class="row">
             <div class="col-xs-3">Дата отгрузки заказа</div>
             <div class="col-xs-3">
-                <input id="timepicker-actions-exmpl" name="date" type="text" class="form-control"
-                       value="<?php if (isset($order['date'])): ?><?= $order['date'] ?><?php endif; ?>">
+                <input id="timepicker-actions-exmpl" name="date_end" type="text" class="form-control"
+                       value="{{ isset($order->date_end) ? \Carbon::parse($order->date_end)->format('d.m.Y H:i') : '' }}">
             </div>
         </div>
         <hr>
@@ -236,40 +237,38 @@
                 <div class="row">
                     <div class="col-xs-4">Выбор услуги</div>
                     <div class="col-xs-8">
-                        <select name="service" class="form-control">
-                            <?php foreach ($services as $service): ?>
-                            <option value="<?= $service ?>"<?php if (isset($order['service']) && $order['service'] == $service): ?> selected<?php endif; ?>><?= $service ?></option>
-                            <?php endforeach; ?>
+                        <select name="service_id" class="form-control">
+                            @foreach ($services as $service)
+                            <option value="{{ $service->id }}" {{ $order->service_id == $service->id ? 'selected' : ''}}>{{ $service->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-4">Тираж</div>
                     <div class="col-xs-8">
-                        <input id="qty" name="qty" type="number" class="form-control"
-                               value="<?php if (isset($order['qty'])): ?><?= $order['qty'] ?><?php endif; ?>">
+                        <input id="qty" name="quantity" type="number" class="form-control" min="0"
+                               value="{{ $order->quantity > 0 ? $order->quantity : '' }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-4">Цветность</div>
                     <div class="col-xs-2">
-                        <label class="checkbox-inline"><input name="incolor"
-                                                              type="checkbox"<?php if (isset($order['incolor'])): ?>
-
-                                                              <?php if ($order['incolor'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>цвет</label>
+                        <label class="checkbox-inline"><input name="is_color"
+                                                              type="checkbox" {{ $order->is_color > 0 ? 'checked' : '' }}>цвет</label>
                     </div>
                     <div class="col-xs-2">
-                        <label class="checkbox-inline"><input name="noncolor"
-                                                              type="checkbox"<?php if (isset($order['noncolor'])): ?><?php if ($order['noncolor'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>чб</label>
+                        <label class="checkbox-inline"><input name="is_non_color"
+                                                              type="checkbox" {{ $order->is_non_color > 0 ? 'checked' : '' }}>чб</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-4">Тип бумаги</div>
                     <div class="col-xs-8">
-                        <select name="paper" class="form-control">
-                            <?php foreach ($papers as $paper): ?>
-                            <option value="<?= $paper ?>"<?php if (isset($order['paper']) && $order['paper'] == $paper): ?> selected<?php endif; ?>><?= $paper ?></option>
-                            <?php endforeach; ?>
+                        <select name="paper_id" class="form-control">
+                            @foreach ($papers as $paper)
+                                <option value="{{ $paper->id }}" {{ $order->paper_id == $paper->id ? 'selected' : ''}}>{{ $paper->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -278,8 +277,8 @@
                 <div class="row textarea">
                     <div class="col-xs-3">Комментарий к заказу</div>
                     <div class="col-xs-9">
-						<textarea name="comment_full" rows="7" class="form-control" placeholder="Комментарий к заказу"
-                                  value="<?php if (isset($order['comment_full'])): ?><?= $order['comment_full'] ?><?php endif; ?>"><?php if (isset($order['comment_full'])): ?><?= $order['comment_full'] ?><?php endif; ?></textarea>
+						<textarea name="comment" rows="7" class="form-control" placeholder="Комментарий к заказу"
+                                  value="{{ $order->comment }}">{{ $order->comment }}</textarea>
                     </div>
                 </div>
             </div>
@@ -290,28 +289,30 @@
                 <div class="row">
                     <div class="col-xs-3">Сумма заказа</div>
                     <div class="col-xs-7">
+                        <input type="hidden" name="amount" value="{{ $order->amount }}">
                         <input id="grn1" name="grn1" type="number" size="5"
-                               value="<?php if (isset($order['grn1'])): ?><?= $order['grn1'] ?><?php endif; ?>">.<input
+                               value="{{ explode('.', $order->amount)[0] }}">.<input
                                 id="kops1" name="kops1" type="number" size="2"
-                                value="<?php if (isset($order['kops1'])): ?><?= $order['kops1'] ?><?php endif; ?>">
+                                value="{{ count(explode('.', $order->amount)) > 1 ? explode('.', $order->amount)[1] : '00' }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-3">Предоплата</div>
                     <div class="col-xs-7">
+                        <input type="hidden" name="prepayment" value="{{ $order->prepayment }}">
                         <input id="grn2" name="grn2" type="number" size="5"
-                               value="<?php if (isset($order['grn2'])): ?><?= $order['grn2'] ?><?php endif; ?>">.<input
+                               value="{{ explode('.', $order->prepayment)[0] }}">.<input
                                 id="kops2" name="kops2" type="number" size="2"
-                                value="<?php if (isset($order['kops2'])): ?><?= $order['kops2'] ?><?php endif; ?>">
+                                value="{{ count(explode('.', $order->prepayment)) > 1 ? explode('.', $order->prepayment)[1] : '00' }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-3">Доплата</div>
                     <div class="col-xs-7">
                         <input id="grn3" name="grn3" type="number" size="5"
-                               value="<?php if (isset($order['grn3'])): ?><?= $order['grn3'] ?><?php endif; ?>"
+                               value="{{ explode('.', $order->surcharge)[0] }}"
                                disabled>.<input id="kops3" name="kops3" type="number" size="2"
-                                                value="<?php if (isset($order['kops3'])): ?><?= $order['kops3'] ?><?php endif; ?>"
+                                                value="{{ count(explode('.', $order->surcharge)) > 1 ? explode('.', $order->surcharge)[1] : '00' }}"
                                                 disabled>
                     </div>
                 </div>
@@ -321,21 +322,23 @@
                     <div class="col-xs-4">Дизайн</div>
                     <div class="col-xs-8">
                         <input name="price_design" type="number" size="5"
-                               value="<?php if (isset($order['price_design'])): ?><?= $order['price_design'] ?><?php endif; ?>">
+                               value="{{ $order->price_design }}">
                     </div>
                 </div>
             </div>
             <div class="col-xs-7">
                 <div class="row">
                     <div class="row">
-                        <label><input name="sms"
-                                      type="checkbox"<?php if (isset($order['sms'])): ?><?php if ($order['sms'] == 'on'): ?> checked disabled<?php endif; ?><?php endif; ?>>Отослать
-                            sms о приеме заказа</label> <?= isset($order['sms1_status']) ? '('.$order['sms1_status'].')' : '' ?>
+                        <label><input name="sms1"
+                                      type="checkbox" {{ isset($order->sms1) ? 'checked disabled' : '' }}>Отослать
+                            sms о приеме заказа</label>
+                        @isset($order->sms1) ({{ \App\Models\Sms::getStatus($order->sms1->sms_id) }}) @endisset
                     </div>
                     <div class="row">
                         <label><input name="sms2"
-                                      type="checkbox"<?php if (isset($order['sms2'])): ?><?php if ($order['sms2'] == 'on'): ?> checked disabled<?php endif; ?><?php endif; ?>>Отослать
-                            sms о готовности заказа</label> <?= isset($order['sms2_status']) ? '('.$order['sms2_status'].')' : '' ?>
+                                      type="checkbox" {{ isset($order->sms2) ? 'checked disabled' : '' }}>Отослать
+                            sms о готовности заказа</label>
+                        @isset($order->sms2) ({{ \App\Models\Sms::getStatus($order->sms2->sms_id) }}) @endisset
                     </div>
                     <div class="row">
                         <div class="col-xs-5">
@@ -356,7 +359,7 @@
                         <div class="file-form-wrap">
                             <div class="file-upload">
                                 <label>
-                                    <input id="uploaded-file1" type="file" name="file[]" multiple onchange="getFileParam();" />
+                                    <input id="uploaded-file1" type="file" name="files[]" multiple onchange="getFileParam();" />
                                     <span>Выберите  или перетащите <br>сюда файлы</span>
                                 </label>
                             </div>
@@ -368,23 +371,20 @@
                 </div>
             </div>
             <div class="col-xs-7">
-                <?php
-                if ($order['files'] > 0) {
-                ?>
-                <div class="row">
-                    <ol class="file-list">
-                        <?php
-                        foreach ($files as $file) {
-                        ?>
-                        <li><a href="/?page=files&order=<?=$order['id'];?>&file=<?=$file;?>" title="Скачать <?=$file;?>"><?=$file;?></a><span class="del-file" title="Удалить <?=$file;?>">&times;</span> </li>
-                        <?php
-                        }
-                        ?>
-                    </ol>
-                </div>
-                <?php
-                }
-                ?>
+                @if($order->is_files)
+                    <div class="row">
+                        <ol class="file-list">
+                            @forelse(Storage::files(\App\Models\Order::FILES_DIR.'/'.$order->id) as $file)
+{{--                                {{ dd(pathinfo($file)) }}--}}
+                                <li data-delete="{{ route('order.delete_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}">
+                                    <a href="{{ route('order.download_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}" title="Скачать {{ pathinfo($file)['basename'] }}">{{ pathinfo($file)['basename'] }}</a>
+                                    <span class="del-file" title="Удалить {{ pathinfo($file)['basename'] }}">&times;</span>
+                                </li>
+                            @empty
+                            @endforelse
+                        </ol>
+                    </div>
+                @endif
             </div>
         </div>
     </form>

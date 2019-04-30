@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Outsource;
+use App\Models\Paper;
+use App\Models\Service;
 use App\Models\Status;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use LetsAds;
 
 class OrderController extends Controller
@@ -91,7 +94,9 @@ class OrderController extends Controller
         return view('order.edit', [
             'order'      => $order,
             'outsources' => Outsource::all(),
+            'services'   => Service::all(),
             'statuses'   => Status::all(),
+            'papers'     => Paper::all(),
             'users'      => User::all(),
         ]);
     }
@@ -105,7 +110,30 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        if (is_array($request->file('files')) && count($request->file('files'))) {
+            foreach ($request->file('files') as $file) {
+                $file_name = $file->getClientOriginalName();
+                Storage::putFileAs(Order::FILES_DIR.'/'.$order->id, $file, $file_name);
+            }
+            $order->is_files = true;
+        }
+
+        $order->user_id = $request->user_id;
+        $order->status_id = $request->status_id;
+        $order->outsource_id = $request->filled('outsource_id') ? $request->outsource_id : null;
+        $order->service_id = $request->service_id;
+        $order->paper_id = $request->paper_id;
+        $order->is_color = $request->has('is_color');
+        $order->is_non_color = $request->has('is_non_color');
+        $order->quantity = $request->filled('quantity') ? $request->quantity : null;
+        $order->pay_type = $request->pay_type;
+        $order->price_design = $request->price_design;
+        $order->comment = $request->comment;
+        $order->date_end = \Carbon::parse($request->date_end);
+
+        $order->save();
+
+        return redirect(route('order.index'));
     }
 
     /**
@@ -117,5 +145,53 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function downloadFile($order, $file_name)
+    {
+        $path = Order::FILES_DIR.'/'.$order;
+        $file = $this->__getFile($file_name, $path);
+
+        if ($file) {
+            $headers = [
+                'Content-Disposition'  => 'attachment; filename='.urlencode($file_name),
+                'Content-Type'         => 'application/force-download',
+                'Content-Type'         => 'application/octet-stream',
+                'Content-Type'         => 'application/download',
+                'Content-Description'  => 'File Transfer',
+            ];
+            return Storage::download($file['path'], $file['name'], $headers);
+        }
+
+        return back()->withErrors(['error_message' => __('navigations.document_not_found')]);
+    }
+
+    public function deleteFile(Order $order, $file_name)
+    {
+        $path = Order::FILES_DIR.'/'.$order->id;
+        $file = $path.'/'.$file_name;
+
+        $status = false;
+        if (Storage::exists($file)) {
+            Storage::delete($file);
+            $status = true;
+
+            if (!count(Storage::files($path))) {
+                $order->update(['is_files' => false]);
+            }
+        }
+
+        return response()->json(['status' => $status]);
+    }
+
+    private function __getFile($file_name, $path_group)
+    {
+        $file = $path_group.'/'.$file_name;
+
+        if (Storage::exists($file)) {
+            return ['path' => $file, 'name' => $file_name];
+        }
+
+        return false;
     }
 }

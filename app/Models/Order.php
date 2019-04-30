@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    const FILES_DIR = '/public/orders';
+
     const PAYMENT_CASH  = 1;
     const PAYMENT_COUNT = 2;
     const PAYMENT_CARD  = 3;
+
+    protected $fillable = ['is_files'];
 
     public function getSurchargeAttribute()
     {
