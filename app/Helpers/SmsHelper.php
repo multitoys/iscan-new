@@ -2,6 +2,8 @@
 
     namespace App\Helpers;
 
+    use App\Models\Order;
+    use App\Models\Sms;
     use LetsAds;
 
     class SmsHelper
@@ -38,17 +40,27 @@
         public static function sendSms(Order $order, $type)
         {
             switch ($type) {
-                case 'sms1':
+                case 1:
                     $message = 'Ваш заказ №'.$order->id.' принят. Центр полиграфии, пр. Науки,7, тел 0671066500';
                     break;
-                case 'sms2':
-                    $message = 'Ваш заказ №'.(int)$order->id.' готов!Центр полиграфии,пр.Науки 7.';
+                case 2:
+                    $message = 'Ваш заказ №'.$order->id.' готов!Центр полиграфии,пр.Науки 7.';
                     if ($order->surcharge > 0) {
                         $message .= 'К оплате '.$order->surcharge_formated.' грн.';
                     }
                     break;
             }
 
-            $sms = LetsAds::send($message, env('LETSADS_SENDER'), '38'.$order->client->phone);
+            $send = LetsAds::send($message, env('LETSADS_SENDER'), '38'.$order->client->phone);
+            $sms  = new Sms();
+
+            if (isset($send->sms_id)) {
+                $sms->sms_id  = $send->sms_id;
+                $sms->is_sent = true;
+            }
+            $sms->type     = $type;
+            $sms->order_id = $order->id;
+            $sms->message  = $message;
+            $sms->save();
         }
     }

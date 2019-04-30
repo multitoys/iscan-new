@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SmsHelper;
+use App\Models\Client;
 use App\Models\Order;
 use App\Models\Outsource;
 use App\Models\Paper;
@@ -131,7 +133,23 @@ class OrderController extends Controller
         $order->comment = $request->comment;
         $order->date_end = \Carbon::parse($request->date_end);
 
+        if ($request->filled('client_id')) {
+            $order->client_id = $request->client_id;
+        } elseif ($request->filled('phone')) {
+            $client = Client::updateOrCreate (
+                ['phone' => $request->phone],
+                ['name' => $request->client, 'email' => $request->email]
+            );
+            $order->client_id = $client->id;
+        }
         $order->save();
+
+        if ($request->has('sms1') && $order->client_id) {
+            SmsHelper::sendSms($order, 1);
+        }
+        if ($request->has('sms2') && $order->client_id) {
+            SmsHelper::sendSms($order, 2);
+        }
 
         return redirect(route('order.index'));
     }

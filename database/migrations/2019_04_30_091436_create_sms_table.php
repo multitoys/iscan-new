@@ -20,7 +20,6 @@ class CreateSmsTable extends Migration
             $table->tinyInteger('type');
             $table->text('message');
             $table->boolean('is_sent')->default(0);
-            $table->string('status', 100)->nullable();
             $table->timestamps();
 
             $table->unique(['order_id', 'type']);
