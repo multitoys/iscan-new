@@ -49,4 +49,14 @@ class Order extends Model
     {
         return $this->belongsTo('App\Models\Client');
     }
+
+    public function sms1()
+    {
+        return $this->hasOne('App\Models\Sms')->type1();
+    }
+
+    public function sms2()
+    {
+        return $this->hasOne('App\Models\Sms')->type2();
+    }
 }

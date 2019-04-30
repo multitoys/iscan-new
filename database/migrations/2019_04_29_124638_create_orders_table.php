@@ -28,7 +28,7 @@ class CreateOrdersTable extends Migration
             $table->double('amount')->default(0);
             $table->double('prepayment')->default(0);
             $table->integer('price_design')->default(0);
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->boolean('is_files')->default(0);
             $table->timestamp('date_end')->nullable();
             $table->timestamps();

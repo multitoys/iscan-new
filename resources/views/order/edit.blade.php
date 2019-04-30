@@ -141,37 +141,39 @@
 <body>
 <div class="container-fluid">
     <a href="{{ route('order.index') }}">На главную</a>
-    <form action="/?page=order&id=<?php if (isset($order['id'])): ?><?= $order['id'] ?><?php endif; ?>" method="post"
+    <form action="{{ route('order.update', ['order' => $order->id]) }}" method="post"
           enctype="multipart/form-data"
           onsubmit="return (ValidPhone() && ValidClient() && ValidOperator() && ValidInputNumber() && ValidDate())">
-        <input id="order" type="hidden" value="<?= $order['id'] ?>">
+        {{ csrf_field() }}
+        {{ method_field('PUT') }}
         <div class="row">
-            <div class="col-xs-2">НОМЕР ЗАКАЗА<input type="hidden" name="id" value="<?= $order['id'] ?>"></div>
-            <div class="col-xs-1"><?php if (isset($order['id'])): ?><b class="order-id"><?= $order['id'] ?></b><?php endif; ?></div>
+            <div class="col-xs-2">НОМЕР ЗАКАЗА</div>
+            <div class="col-xs-1"><b class="order-id">{{ $order->id }}</b></div>
             <div class="col-xs-2">Оператор</div>
             <div class="col-xs-3">
                 <select name="operator" class="form-control">
                     <option value="">Выбор оператора</option>
-                    <?php foreach ($operators as $operator): ?>
-                    <option value="<?= $operator ?>"<?php if (isset($order['operator']) && $order['operator'] == $operator): ?> selected<?php endif; ?>><?= $operator ?></option>
-                    <?php endforeach; ?>
+                    @foreach ($users as $user)
+                    <option value="{{ $user->id }}" {{ $order->user_id == $user->id ? 'selected' : ''}}>{{ $user->full_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-xs-1">Статус заказа</div>
             <div class="col-xs-3">
                 <select name="status" class="form-control">
-                    <?php foreach ($statuses as $status): ?>
-                    <option value="<?= $status ?>"<?php if (isset($order['status']) && $order['status'] == $status): ?> selected<?php endif; ?>><?= $status ?></option>
-                    <?php endforeach; ?>
+                    @foreach ($statuses as $status)
+                    <option value="{{ $status->id }}" {{ $order->status_id == $status->id ? 'selected' : ''}}>{{ $status->name }}</option>
+                    @endforeach
                 </select>
                 <select name="outsource" class="form-control" style="display:none;">
                     <option value="">Выберите производство</option>
-                    <?php foreach ($outsources as $outsource): ?>
-                    <option value="<?= $outsource ?>"<?php if (isset($order['outsource']) && $order['outsource'] == $outsource): ?> selected<?php endif; ?>><?= $outsource ?></option>
-                    <?php endforeach; ?>
+                    @foreach ($outsources as $outsource)
+                    <option value="{{ $outsource->id }}" {{ $order->outsource_id == $outsource->id ? 'selected' : ''}}>{{ $outsource->code }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
+        {{ dd() }}
         <hr>
         <div class="row">
             <div class="col-xs-1">Заказчик</div>
@@ -226,9 +228,6 @@
             <div class="col-xs-3">
                 <input id="timepicker-actions-exmpl" name="date" type="text" class="form-control"
                        value="<?php if (isset($order['date'])): ?><?= $order['date'] ?><?php endif; ?>">
-                <!--<input name="date" type="date" value="--><? //=$order['date']?><!--">-->
-                <!--<input name="hours" type="number" size="2" value="--><? //=$order['hours']?><!--">часы-->
-                <!--<input name="minutes" type="number" size="2" value="--><? //=$order['minutes']?><!--">минуты-->
             </div>
         </div>
         <hr>
@@ -274,71 +273,6 @@
                         </select>
                     </div>
                 </div>
-            <!-- <div class="row">
-			<div class="col-xs-2">Формат</div>
-			<div class="col-xs-1">
-				<label class="checkbox-inline"><input name="a5"
-													  type="checkbox"<?php if (isset($order['a5'])): ?><?php if ($order['a5'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>A5</label>
-			</div>
-			<div class="col-xs-1">
-				<label class="checkbox-inline"><input name="a4"
-													  type="checkbox"<?php if (isset($order['a4'])): ?><?php if ($order['a4'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>A4</label>
-			</div>
-			<div class="col-xs-1">
-				<label class="checkbox-inline"><input name="a3"
-													  type="checkbox"<?php if (isset($order['a3'])): ?><?php if ($order['a3'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>A3</label>
-			</div>
-			<div class="col-xs-1">
-				<label class="checkbox-inline"><input name="a2"
-													  type="checkbox"<?php if (isset($order['a2'])): ?><?php if ($order['a2'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>A2</label>
-			</div>
-			<div class="col-xs-1">
-				<label class="checkbox-inline"><input name="a1"
-													  type="checkbox"<?php if (isset($order['a1'])): ?><?php if ($order['a1'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>A1</label>
-			</div>
-			<div class="col-xs-1">
-				<label class="checkbox-inline"><input name="a0"
-													  type="checkbox"<?php if (isset($order['a0'])): ?><?php if ($order['a0'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>A0</label>
-			</div>
-			<div class="col-xs-3">
-				<input name="format" type="text" class="form-control" placeholder="другое"
-					   value="<?php if (isset($order['format'])): ?><?= $order['format'] ?><?php endif; ?>">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-2"></div>
-			<div class="col-xs-2">
-				<label class="checkbox-inline"><input name="10_15"
-													  type="checkbox"<?php if (isset($order['10_15'])): ?><?php if ($order['10_15'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>10&times;15</label>
-			</div>
-			<div class="col-xs-2">
-				<label class="checkbox-inline"><input name="15_21"
-													  type="checkbox"<?php if (isset($order['15_21'])): ?><?php if ($order['15_21'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>15&times;21</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-2">
-				<label class="checkbox-inline"><input name="postprint"
-													  type="checkbox"<?php if (isset($order['postprint'])): ?><?php if ($order['postprint'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>постпечать</label>
-			</div>
-			<div class="col-xs-2">
-				<label class="checkbox-inline"><input name="stitching"
-													  type="checkbox"<?php if (isset($order['stitching'])): ?><?php if ($order['stitching'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>брошюровка</label>
-			</div>
-			<div class="col-xs-2">
-				<label class="checkbox-inline"><input name="folding"
-													  type="checkbox"<?php if (isset($order['folding'])): ?><?php if ($order['folding'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>фальцовка</label>
-			</div>
-			<div class="col-xs-2">
-				<label class="checkbox-inline"><input name="trimming"
-													  type="checkbox"<?php if (isset($order['trimming'])): ?><?php if ($order['trimming'] == 'on'): ?> checked<?php endif; ?><?php endif; ?>>подрезка</label>
-			</div>
-			<div class="col-xs-4">
-				<textarea name="comment" class="form-control" placeholder="комментарий"
-						  value="<?php if (isset($order['comment'])): ?><?= $order['comment'] ?><?php endif; ?>"><?php if (isset($order['comment'])): ?><?= $order['comment'] ?><?php endif; ?></textarea>
-			</div>
-		</div> -->
-
             </div>
             <div class="col-xs-7">
                 <div class="row textarea">
@@ -430,9 +364,6 @@
                             <div id="file-name1">&nbsp;</div>
                             <div id="file-size1">&nbsp;</div>
                         </div>
-                        <!--<label>Прикрепить файлы-->
-                        <!--    <input name="files[]" type="file" multiple>-->
-                        <!--</label>-->
                     </div>
                 </div>
             </div>

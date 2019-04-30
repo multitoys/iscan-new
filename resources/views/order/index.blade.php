@@ -68,32 +68,32 @@
     <form action="{{ route('order.index') }}" method="get">
         <div class="col-xs-2">
             <select name="status" class="form-control" data-active="{{ $request->status }}">
-                <option value="all">Bсе заказы</option>
-                @foreach($statuses as $id => $status)
-                <option value="{{ $id }}">{{ $status }}</option>
+                <option value="">Bсе заказы</option>
+                @foreach($statuses as $status)
+                <option value="{{ $status->id }}" {{ $request->status == $status->id ? 'selected' : '' }}>{{ $status->name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-xs-2">
-            <select name="operator" class="form-control" data-active="{{ $request->user }}">
-                <option value="all">Bсе операторы</option>
+            <select name="user" class="form-control" data-active="{{ $request->user }}">
+                <option value="">Bсе операторы</option>
                 @foreach($users as $user)
-                <option value="{{ $user->id }}">{{ $user->last_name.' '.$user->first_name }}</option>
+                <option value="{{ $user->id }}" {{ $request->user == $user->id ? 'selected' : '' }}>{{ $user->last_name.' '.$user->first_name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-xs-3">
-            <input type="text" name="search" class="form-control" placeholder="Клиент, телефон или Email" value="{{ $request->search }}">
+            <input type="text" name="client" class="form-control" placeholder="Клиент, телефон или Email" value="{{ $request->client }}">
         </div>
         <div class="col-xs-1">
             <button class="btn btn-info">ok</button>
         </div>
         <div class="col-xs-2"><a class="btn btn-white" href="/">Обновить страницу</a> </div>
         <div class="col-xs-2">
-            <a class="btn btn-success new-order" href="/?page=order">Создать новый заказ</a>
+            <a class="btn btn-success new-order" href="{{ route('order.create') }}">Создать новый заказ</a>
         </div>
     </form>
-    {{ $orders->links() }}
+    {{ $orders->appends($request->all())->links() }}
     <table id="main" class="table table-condensed table-bordered">
         <thead>
         <tr>
@@ -139,19 +139,19 @@
                     @break
             @endswitch
             <td>{{ $order->id }}&nbsp;<a class="" href="{{ route('order.edit', ['order' => $order->id]) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
-            <td>{{ $order->client->name }}</td>
-            <td>{{ $order->service->name }}</td>
+            <td>{{ $order->client->name ?? '' }}</td>
+            <td>{{ $order->service->name ?? '' }}</td>
             <td>{{ $order->comment }}</td>
             <td>@if($order->is_files) <span class="glyphicon glyphicon-ok"></span> @endif</td>
             <td>{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</td>
             <td>{{ $order->date }}</td>
             <td>{{ isset($order->user) ? $order->user->full_name : '' }}</td>
-            <td><div class="{{ isset($order->sms1) }}"></div></td>
-            <td><div class="{{ isset($order->sms2) }}"></div></td>
+            <td><div class="{{ isset($order->sms1) ? 'true' : 'false' }}"></div></td>
+            <td><div class="{{ isset($order->sms2) ? 'true' : 'false' }}"></div></td>
             <td>
-                {{ $order->status->name }}
+                {{ $order->status->name ?? '' }}
                 @if($order->status_id == 4)
-                    <b>{{ $order->outsource->code }}</b>
+                    <b>{{ $order->outsource->code ?? '' }}</b>
                 @endif
             </td>
             @if($order->surcharge > 0 && $order->status_id != 6)
@@ -163,7 +163,7 @@
         @empty
         @endforelse
     </table>
-    {{ $orders->links() }}
+    {{ $orders->appends($request->all())->links() }}
 </div>
 <script src="http://code.jquery.com/jquery-latest.js" defer></script>
 <script src="{{ asset('js/bootstrap.js') }}" defer></script>
