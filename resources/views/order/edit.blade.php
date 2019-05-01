@@ -135,9 +135,6 @@
             color:red;
         }
     </style>
-    <!-- Bootstrap -->
-    <script src="http://code.jquery.com/jquery-latest.js" defer></script>
-    <script src="{{ asset('js/datepicker.js') }}" defer></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -181,7 +178,7 @@
                 <input type="hidden" name="client_id" value="{{ $order->client_id ?? '' }}">
                 <input name="client" id="client" type="text" class="form-control"
                        value="{{ $order->client->name ?? '' }}"
-                       autocomplete="off">
+                       autocomplete="off" data-url="{{ route('client.search') }}">
                 <div id="search_results3"></div>
             </div>
             <div class="col-xs-1">Моб. тел.</div>
@@ -190,7 +187,7 @@
                     <span class="input-group-addon">38</span>
                     <input name="phone" id="phone" type="tel" class="form-control"
                            value="{{ $order->client->phone ?? '' }}"
-                           autocomplete="off">
+                           autocomplete="off" data-url="{{ route('client.search') }}">
                     <div id="search_results"></div>
                 </div>
             </div>
@@ -200,7 +197,7 @@
                     <span class="input-group-addon">@</span>
                     <input name="email" id="email" type="text" class="form-control"
                            value="{{ $order->client->email ?? '' }}"
-                           autocomplete="off">
+                           autocomplete="off" data-url="{{ route('client.search') }}">
                     <div id="search_results2"></div>
                 </div>
             </div>
@@ -289,7 +286,7 @@
                 <div class="row">
                     <div class="col-xs-3">Сумма заказа</div>
                     <div class="col-xs-7">
-                        <input type="hidden" name="amount" value="{{ $order->amount }}">
+                        <input id="amount" type="hidden" name="amount" value="{{ $order->amount }}">
                         <input id="grn1" name="grn1" type="number" size="5"
                                value="{{ explode('.', $order->amount)[0] }}">.<input
                                 id="kops1" name="kops1" type="number" size="2"
@@ -299,7 +296,7 @@
                 <div class="row">
                     <div class="col-xs-3">Предоплата</div>
                     <div class="col-xs-7">
-                        <input type="hidden" name="prepayment" value="{{ $order->prepayment }}">
+                        <input id="prepayment" type="hidden" name="prepayment" value="{{ $order->prepayment }}">
                         <input id="grn2" name="grn2" type="number" size="5"
                                value="{{ explode('.', $order->prepayment)[0] }}">.<input
                                 id="kops2" name="kops2" type="number" size="2"
@@ -390,6 +387,8 @@
     </form>
 </div>
 <div class="wrapper"></div>
+<script src="{{ asset('js/jquery.js') }}" defer></script>
+<script src="{{ asset('js/datepicker.js') }}" defer></script>
 <script src="{{ asset('js/bootstrap.js') }}" defer></script>
 <script src="{{ asset('js/script.js') }}?v_1.11" defer></script>
 </body>

@@ -10,31 +10,35 @@
     {
         public static function getStatus($sms_id)
         {
-            switch (LetsAds::status($sms_id)->description) {
-                case 'MESSAGE_IS_DELIVERED':
-                    $sms_status = 'доставлено';
-                    break;
-                case 'MESSAGE_IS_SENT':
-                    $sms_status = 'отправлено';
-                    break;
-                case 'MESSAGE_NOT_DELIVERED':
-                    $sms_status = 'не доставлено';
-                    break;
-                case 'MESSAGE_IN_QUEUE':
-                    $sms_status = 'поставлено в очередь на отправку';
-                    break;
-                case 'MESSAGE_IN_QUEUE':
-                    $sms_status = 'поставлено в очередь на отправку';
-                    break;
-                case 'MESSAGE_NOT_EXIST':
-                    $sms_status = 'такое сообщение не существует';
-                    break;
-                default:
-                    $sms_status = 'статус не известен';
-                    break;
-            }
+            try {
+                switch (LetsAds::status($sms_id)->description) {
+                    case 'MESSAGE_IS_DELIVERED':
+                        $sms_status = 'доставлено';
+                        break;
+                    case 'MESSAGE_IS_SENT':
+                        $sms_status = 'отправлено';
+                        break;
+                    case 'MESSAGE_NOT_DELIVERED':
+                        $sms_status = 'не доставлено';
+                        break;
+                    case 'MESSAGE_IN_QUEUE':
+                        $sms_status = 'поставлено в очередь на отправку';
+                        break;
+                    case 'MESSAGE_IN_QUEUE':
+                        $sms_status = 'поставлено в очередь на отправку';
+                        break;
+                    case 'MESSAGE_NOT_EXIST':
+                        $sms_status = 'такое сообщение не существует';
+                        break;
+                    default:
+                        $sms_status = 'статус не известен';
+                        break;
+                }
 
-            return $sms_status;
+                return $sms_status;
+            } catch (\Exception $e) {
+                return 'Сервис смс-сообщений не доступен';
+            }
         }
 
         public static function sendSms(Order $order, $type)
@@ -51,9 +55,12 @@
                     break;
             }
 
-            $send = LetsAds::send($message, env('LETSADS_SENDER'), '38'.$order->client->phone);
-            $sms  = new Sms();
+            try {
+                $send = LetsAds::send($message, env('LETSADS_SENDER'), '38' . $order->client->phone);
+            } catch (\Exception $e) {
+            }
 
+            $sms = new Sms();
             if (isset($send->sms_id)) {
                 $sms->sms_id  = $send->sms_id;
                 $sms->is_sent = true;

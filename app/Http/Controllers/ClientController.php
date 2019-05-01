@@ -82,4 +82,25 @@ class ClientController extends Controller
     {
         //
     }
+
+    public function searchClients(Request $request)
+    {
+        $clients = Client::where($request->field, 'like', '%'.$request->search.'%')
+                           ->with('ordersReady')->get();
+        if ($clients->count()) {
+            $field = $request->field == 'name' ? 'phone' : $request->field;
+
+            $search_results = view('client.search', [
+                'clients' => $clients,
+                'field'   => $field,
+            ])->render();
+
+            return response()->json([
+                'success' => true,
+                'content' => view('client.search_wrap', compact('search_results'))->render()
+            ]);
+        }
+
+        return response()->json(['success' => false]);
+    }
 }

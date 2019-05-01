@@ -1,0 +1,1 @@
+<ul>{!! $search_results !!}</ul>

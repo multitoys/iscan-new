@@ -16,6 +16,7 @@ Auth::routes();
 Route::get('/', 'MainController@index')->name('main');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('client/search', 'ClientController@searchClients')->name('client.search');
     Route::resource('client', 'ClientController');
     Route::resource('outsource', 'OutsourceController');
     Route::resource('paper', 'PaperController');

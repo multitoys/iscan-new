@@ -154,7 +154,7 @@
                     <b>{{ $order->outsource->code ?? '' }}</b>
                 @endif
             </td>
-            @if($order->surcharge > 0 && $order->status_id != 6)
+            @if($order->surcharge != 0 && $order->status_id != 6)
                 <td class="back-red">{{ $order->surcharge_formated }} </td>
             @else
                 <td></td>
@@ -165,7 +165,7 @@
     </table>
     {{ $orders->appends($request->all())->links() }}
 </div>
-<script src="http://code.jquery.com/jquery-latest.js" defer></script>
+<script src="{{ asset('js/jquery.js') }}" defer></script>
 <script src="{{ asset('js/bootstrap.js') }}" defer></script>
 </body>
 </html>

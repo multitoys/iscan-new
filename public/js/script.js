@@ -104,7 +104,10 @@ var kops1 = document.getElementById('kops1');
 var kops2 = document.getElementById('kops2');
 var kops3 = document.getElementById('kops3');
 
-function surcharge(g1, g2, g3, k1, k2, k3) {
+var amount     = document.getElementById('amount');
+var prepayment = document.getElementById('prepayment');
+
+function surcharge(g1, g2, g3, k1, k2, k3, amount, prepayment) {
     g1.value = (g1.value != '')?g1.value:'0';
     g2.value = (g2.value != '')?g2.value:'0';
     k1.value = (k1.value != '')?k1.value:'00';
@@ -130,6 +133,9 @@ function surcharge(g1, g2, g3, k1, k2, k3) {
     kops = kops >= 10 ? kops : "0" + kops;
     k3.value = kops
     k3.setAttribute('value', kops);
+
+    amount.setAttribute('value', sum / 100);
+    prepayment.setAttribute('value', prepaid / 100);
 }
 
 grn1.onfocus = grn2.onfocus = kops1.onfocus = kops2.onfocus = function (e) {
@@ -151,7 +157,7 @@ kops1.onfocusout = kops2.onfocusout = function (e) {
 }
 
 window.onload = grn1.onchange = grn2.onchange = kops1.onchange = kops2.onchange = function () {
-    surcharge(grn1, grn2, grn3, kops1, kops2, kops3);
+    surcharge(grn1, grn2, grn3, kops1, kops2, kops3, amount, prepayment);
 }
 
 function throttle(func, ms) {
@@ -177,11 +183,13 @@ function throttle(func, ms) {
     return wrapper;
 }
 $('#search_results, #search_results2, #search_results3').on('click', 'ul li', function () {
+    var id     = $(this).attr("data-id");
     var phone  = $(this).attr("data-phone");
     var client = $(this).attr("data-client");
     var email  = $(this).attr("data-email");
     var ready  = parseInt($(this).attr("data-ready"));
 
+    $('[name="client_id"]').attr("value", id);
     $('#phone').attr("value", phone);
     $('#client').attr("value", client);
     $('#email').attr("value", email);
@@ -213,12 +221,11 @@ $(function () {
         var search = $searchString.val();
         if (search.length > 5) {
             $.ajax({
-                type: "POST",
-                url: "/includes/search.php",
-                data: {ajax: 'search_client', search: search, field: 'phone'},
+                type: "get",
+                url: $searchString.attr('data-url'),
+                data: {search: search, field: 'phone'},
                 cache: false,
                 success: function (response) {
-                    response = JSON.parse((response));
                     if (response.success) {
                         $wrapper.css('display', 'block');
                         $liveSearch.html(response.content);
@@ -234,12 +241,11 @@ $(function () {
         var search = $searchEmail.val();
         if (search.length > 2) {
             $.ajax({
-                type: "POST",
-                url: "/includes/search.php",
-                data: {ajax: 'search_client', search: search, field: 'email'},
+                type: "get",
+                url: $searchEmail.attr('data-url'),
+                data: {search: search, field: 'email'},
                 cache: false,
                 success: function (response) {
-                    response = JSON.parse((response));
                     if (response.success) {
                         $wrapper.css('display', 'block');
                         $emailSearch.html(response.content);
@@ -255,12 +261,11 @@ $(function () {
         var search = $searchClient.val();
         if (search.length > 4) {
             $.ajax({
-                type: "POST",
-                url: "/includes/search.php",
-                data: {ajax: 'search_client', search: search, field: 'client'},
+                type: "get",
+                url: $searchClient.attr('data-url'),
+                data: {search: search, field: 'name'},
                 cache: false,
                 success: function (response) {
-                    response = JSON.parse((response));
                     if (response.success) {
                         $wrapper.css('display', 'block');
                         $clientSearch.html(response.content);

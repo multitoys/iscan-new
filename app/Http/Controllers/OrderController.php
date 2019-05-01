@@ -119,26 +119,28 @@ class OrderController extends Controller
             }
             $order->is_files = true;
         }
-
-        $order->user_id = $request->user_id;
-        $order->status_id = $request->status_id;
+    
+        $order->user_id      = $request->user_id;
+        $order->status_id    = $request->status_id;
         $order->outsource_id = $request->filled('outsource_id') ? $request->outsource_id : null;
-        $order->service_id = $request->service_id;
-        $order->paper_id = $request->paper_id;
-        $order->is_color = $request->has('is_color');
+        $order->service_id   = $request->service_id;
+        $order->paper_id     = $request->paper_id;
+        $order->is_color     = $request->has('is_color');
         $order->is_non_color = $request->has('is_non_color');
-        $order->quantity = $request->filled('quantity') ? $request->quantity : null;
-        $order->pay_type = $request->pay_type;
+        $order->quantity     = $request->filled('quantity') ? $request->quantity : null;
+        $order->pay_type     = $request->pay_type;
+        $order->amount       = $request->amount;
+        $order->prepayment   = $request->prepayment;
         $order->price_design = $request->price_design;
-        $order->comment = $request->comment;
-        $order->date_end = \Carbon::parse($request->date_end);
+        $order->comment      = $request->comment;
+        $order->date_end     = \Carbon::parse($request->date_end);
 
         if ($request->filled('client_id')) {
             $order->client_id = $request->client_id;
         } elseif ($request->filled('phone')) {
             $client = Client::updateOrCreate (
                 ['phone' => $request->phone],
-                ['name' => $request->client, 'email' => $request->email]
+                ['name'  => $request->client, 'email' => $request->email]
             );
             $order->client_id = $client->id;
         }
