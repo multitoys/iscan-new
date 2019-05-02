@@ -18,7 +18,7 @@ class CreateSmsTable extends Migration
             $table->unsignedInteger('sms_id')->nullable();
             $table->unsignedInteger('order_id');
             $table->tinyInteger('type');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->boolean('is_sent')->default(0);
             $table->timestamps();
 
