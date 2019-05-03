@@ -11,11 +11,13 @@ use App\Models\Service;
 use App\Models\Status;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use LetsAds;
 
 class OrderController extends Controller
 {
+    public $cache_time = 60 * 60;
     /**
      * Display a listing of the resource.
      *
@@ -23,8 +25,6 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-//        dd(LetsAds::send('hello', env('LETSADS_SENDER'), '380637174385'));
-//        $sms = LetsAds::status(125573782);
         $orders = Order::with(['user', 'status', 'client', 'service', 'outsource', 'sms1', 'sms2'])
                         ->when($request->filled('user'), function ($query) use ($request) {
                             return $query->where('user_id', $request->user);
@@ -40,10 +40,16 @@ class OrderController extends Controller
                             });
                         })
                         ->orderByDesc('id')->paginate(50);
-
+        $statuses = Cache::remember('statuses', $this->cache_time, function () {
+            return Status::all();
+        });
+        $users    = Cache::remember('users', $this->cache_time, function () {
+            return User::all();
+        });
+        
         return view('order.index', [
-            'statuses' => Status::all(),
-            'users'    => User::all(),
+            'statuses' => $statuses,
+            'users'    => $users,
             'orders'   => $orders,
             'request'  => $request,
         ]);
@@ -93,13 +99,29 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
+        $outsources = Cache::remember('outsources', $this->cache_time, function () {
+            return Outsource::all();
+        });
+        $services   = Cache::remember('services', $this->cache_time, function () {
+            return Service::all();
+        });
+        $statuses   = Cache::remember('statuses', $this->cache_time, function () {
+            return Status::all();
+        });
+        $papers     = Cache::remember('papers', $this->cache_time, function () {
+            return Paper::all();
+        });
+        $users      = Cache::remember('users', $this->cache_time, function () {
+            return User::all();
+        });
+        
         return view('order.edit', [
             'order'      => $order,
-            'outsources' => Outsource::all(),
-            'services'   => Service::all(),
-            'statuses'   => Status::all(),
-            'papers'     => Paper::all(),
-            'users'      => User::all(),
+            'outsources' => $outsources,
+            'services'   => $services,
+            'statuses'   => $statuses,
+            'papers'     => $papers,
+            'users'      => $users,
         ]);
     }
 

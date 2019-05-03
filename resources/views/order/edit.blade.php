@@ -325,18 +325,18 @@
             </div>
             <div class="col-xs-7">
                 <div class="row">
-                    <div class="row">
-                        <label><input name="sms1"
-                                      type="checkbox" {{ isset($order->sms1) ? 'checked disabled' : '' }}>Отослать
-                            sms о приеме заказа</label>
-                        @isset($order->sms1) ({{ \App\Helpers\SmsHelper::getStatus($order->sms1->sms_id) }}) @endisset
-                    </div>
-                    <div class="row">
-                        <label><input name="sms2"
-                                      type="checkbox" {{ isset($order->sms2) ? 'checked disabled' : '' }}>Отослать
-                            sms о готовности заказа</label>
-                        @isset($order->sms2) ({{ \App\Helpers\SmsHelper::getStatus($order->sms2->sms_id) }}) @endisset
-                    </div>
+{{--                    <div class="row">--}}
+{{--                        <label><input name="sms1"--}}
+{{--                                      type="checkbox" {{ isset($order->sms1) ? 'checked disabled' : '' }}>Отослать--}}
+{{--                            sms о приеме заказа</label>--}}
+{{--                        @isset($order->sms1) ({{ \App\Helpers\SmsHelper::getStatus($order->sms1->sms_id) }}) @endisset--}}
+{{--                    </div>--}}
+{{--                    <div class="row">--}}
+{{--                        <label><input name="sms2"--}}
+{{--                                      type="checkbox" {{ isset($order->sms2) ? 'checked disabled' : '' }}>Отослать--}}
+{{--                            sms о готовности заказа</label>--}}
+{{--                        @isset($order->sms2) ({{ \App\Helpers\SmsHelper::getStatus($order->sms2->sms_id) }}) @endisset--}}
+{{--                    </div>--}}
                     <div class="row">
                         <div class="col-xs-5">
                             <input type="submit" class="btn btn-info" value="Сохранить заказ">
