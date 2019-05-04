@@ -17,13 +17,26 @@ Route::get('/', 'MainController@index')->name('main');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('client/search', 'ClientController@searchClients')->name('client.search');
-    Route::resource('client', 'ClientController');
-    Route::resource('outsource', 'OutsourceController');
-    Route::resource('paper', 'PaperController');
-    Route::resource('service', 'ServiceController');
-    Route::resource('status', 'StatusController');
+    
+    Route::resource('outsource', 'OutsourceController', ['only' => [
+        'index', 'update', 'destroy'
+    ]]);
+    Route::resource('paper', 'PaperController', ['only' => [
+        'index', 'update', 'destroy'
+    ]]);
+    Route::resource('service', 'ServiceController', ['only' => [
+        'index', 'update', 'destroy'
+    ]]);
+    Route::resource('status', 'StatusController', ['only' => [
+        'index', 'update', 'destroy'
+    ]]);
+    Route::resource('user', 'UserController', ['only' => [
+        'index', 'update', 'destroy'
+    ]]);
 
     Route::get('order/download/{order}/{file}', 'OrderController@downloadFile')->name('order.download_file');
     Route::delete('order/delete/{order}/{file}', 'OrderController@deleteFile')->name('order.delete_file');
-    Route::resource('order', 'OrderController');
+    Route::resource('order', 'OrderController', ['except' => [
+        'show', 'store', 'destroy'
+    ]]);
 });

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SmsHelper;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\Outsource;
@@ -14,7 +13,6 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use LetsAds;
 
 class OrderController extends Controller
 {
@@ -68,28 +66,6 @@ class OrderController extends Controller
         $order->save();
 
         return redirect(route('order.edit', ['order' => $order->id]));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
-        //
     }
 
     /**
@@ -184,18 +160,7 @@ class OrderController extends Controller
 
         return redirect(route('order.index'));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
-    }
-
+    
     public function downloadFile($order, $file_name)
     {
         $path = Order::FILES_DIR.'/'.$order;
