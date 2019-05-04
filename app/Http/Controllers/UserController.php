@@ -20,4 +20,23 @@ class UserController extends Controller
         
         return redirect(route('user.index'));
     }
+    
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'login'    => 'required|unique:users|max:50',
+            'password' => 'required|min:4',
+            'role'     => 'required|numeric',
+        ]);
+        
+        User::create([
+            'login'      => $request->login,
+            'password'   => bcrypt($request->password),
+            'last_name'  => $request->last_name,
+            'first_name' => $request->first_name,
+            'role'       => $request->role,
+        ]);
+        
+        return redirect(route('user.index'));
+    }
 }

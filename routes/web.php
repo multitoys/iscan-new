@@ -19,19 +19,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('client/search', 'ClientController@searchClients')->name('client.search');
     
     Route::resource('outsource', 'OutsourceController', ['only' => [
-        'index', 'update', 'destroy'
+        'index', 'store', 'destroy'
     ]]);
     Route::resource('paper', 'PaperController', ['only' => [
-        'index', 'update', 'destroy'
+        'index', 'store', 'destroy'
     ]]);
     Route::resource('service', 'ServiceController', ['only' => [
-        'index', 'update', 'destroy'
+        'index', 'store', 'destroy'
     ]]);
     Route::resource('status', 'StatusController', ['only' => [
-        'index', 'update', 'destroy'
+        'index', 'store', 'destroy'
     ]]);
     Route::resource('user', 'UserController', ['only' => [
-        'index', 'update', 'destroy'
+        'index', 'store', 'destroy'
     ]]);
 
     Route::get('order/download/{order}/{file}', 'OrderController@downloadFile')->name('order.download_file');

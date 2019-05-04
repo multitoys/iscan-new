@@ -18,6 +18,8 @@ class CreateOutsourcesTable extends Migration
             $table->string('name', 100);
             $table->string('code', 10);
             $table->timestamps();
+            
+            $table->unique(['name', 'code']);
         });
     }
 
