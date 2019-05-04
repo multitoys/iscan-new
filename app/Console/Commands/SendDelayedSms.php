@@ -46,7 +46,7 @@ class SendDelayedSms extends Command
         if (count($messsages)) {
             foreach ($messsages as $sms) {
                 SmsHelper::sendSms($sms);
-                $sms->attempts = ++$sms->attempts;
+                $sms->attempts++;
                 $sms->save();
             }
         }
