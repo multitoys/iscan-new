@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\SmsHelper;
 use App\Models\Sms;
 use Illuminate\Console\Command;
 use LetsAds;
@@ -39,19 +40,14 @@ class SendDelayedSms extends Command
      */
     public function handle()
     {
-        $messsages = Sms::where('is_sent', false)->with('order.client')->get();
+        $messsages = Sms::where('is_sent', false)->where('attempts', '<', Sms::MAX_ATTEMPTS)
+                        ->with('order.client')->get();
 
         if (count($messsages)) {
             foreach ($messsages as $sms) {
-                try {
-                    $send = LetsAds::send($sms->message, env('LETSADS_SENDER'), '38' . $sms->order->client->phone);
-                } catch (\Exception $e) {
-                }
-                if (isset($send->sms_id)) {
-                    $sms->sms_id  = $send->sms_id;
-                    $sms->is_sent = true;
-                    $sms->save();
-                }
+                SmsHelper::sendSms($sms);
+                $sms->attempts = ++$sms->attempts;
+                $sms->save();
             }
         }
     }

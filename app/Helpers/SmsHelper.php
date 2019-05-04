@@ -11,39 +11,30 @@
         public static function getStatus($sms_id)
         {
             try {
-                switch (LetsAds::status($sms_id)->description) {
+                $status = LetsAds::status($sms_id);
+                switch ($status->description) {
                     case 'MESSAGE_IS_DELIVERED':
-                        $sms_status = 'доставлено';
-                        break;
                     case 'MESSAGE_IS_SENT':
-                        $sms_status = 'отправлено';
-                        break;
                     case 'MESSAGE_NOT_DELIVERED':
-                        $sms_status = 'не доставлено';
-                        break;
                     case 'MESSAGE_IN_QUEUE':
-                        $sms_status = 'поставлено в очередь на отправку';
-                        break;
-                    case 'MESSAGE_IN_QUEUE':
-                        $sms_status = 'поставлено в очередь на отправку';
-                        break;
                     case 'MESSAGE_NOT_EXIST':
-                        $sms_status = 'такое сообщение не существует';
+                        $sms_status = Sms::$status;
                         break;
                     default:
-                        $sms_status = 'статус не известен';
+                        $sms_status = Sms::MESSAGE_UNKNOWN;
                         break;
                 }
-
-                return $sms_status;
             } catch (\Exception $e) {
-                return 'Сервис смс-сообщений не доступен';
+                $sms_status = Sms::MESSAGE_UNKNOWN;
             }
+    
+            return $sms_status;
         }
 
-        public static function sendSms(Order $order, $type)
+        public static function sendSms(Sms $sms)
         {
-            switch ($type) {
+            $order = Order::findOrFail($sms->order_id);
+            switch ($sms->type) {
                 case 1:
                     $message = 'Ваш заказ №'.$order->id.' принят. Центр полиграфии, пр. Науки,7, тел 0671066500';
                     break;
@@ -60,14 +51,10 @@
             } catch (\Exception $e) {
             }
 
-            $sms = new Sms();
             if (isset($send->sms_id)) {
                 $sms->sms_id  = $send->sms_id;
                 $sms->is_sent = true;
             }
-            $sms->type     = $type;
-            $sms->order_id = $order->id;
-            $sms->message  = $message;
-            $sms->save();
+            $sms->message = $message;
         }
     }

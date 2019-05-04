@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Outsource;
 use App\Models\Paper;
 use App\Models\Service;
+use App\Models\Sms;
 use App\Models\Status;
 use App\User;
 use Illuminate\Http\Request;
@@ -169,10 +170,16 @@ class OrderController extends Controller
         $order->save();
 
         if ($request->has('sms1') && $order->client_id) {
-            SmsHelper::sendSms($order, 1);
+            Sms::create([
+                'order_id' => $order->id,
+                'type'     => 1,
+            ]);
         }
         if ($request->has('sms2') && $order->client_id) {
-            SmsHelper::sendSms($order, 2);
+            Sms::create([
+                'order_id' => $order->id,
+                'type'     => 2,
+            ]);
         }
 
         return redirect(route('order.index'));
