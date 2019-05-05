@@ -29,9 +29,26 @@
 @endif
 <div class="container">
     <div class="row">
-        <a href="{{ route('order.index') }}">На главную</a>
+        <a href="{{ route('order.index') }}" class="btn btn-default">На главную</a>
     </div>
     <div class="row">
+        <div class="col-xs-6">
+            <p class="lead">Операторы</p>
+            <ol>
+                @foreach($users as $user)
+                    <li>
+                        {{ $user->full_name }} ({{ $user->login }}) - {{ $user->role_name }}
+                        @if($user->id != auth()->user()->id)
+                            <span><a href="#{{ $user->id }}" class="del">&times;</a></span>
+                            <form id="{{ $user->id }}" action="{{ route('user.destroy', ['user' => $user->id]) }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        @endif
+                    </li>
+                @endforeach
+            </ol>
+        </div>
         <div class="col-xs-6">
             <form action="{{ route('user.store') }}" method="post">
                 {{ csrf_field() }}
@@ -61,22 +78,6 @@
                     <input type="submit" value="Добавить" class="btn btn-info">
                 </div>
             </form>
-        </div>
-        <div class="col-xs-6">
-            <ol>
-                @foreach($users as $user)
-                    <li>
-                        {{ $user->full_name }} ({{ $user->login }}) - {{ $user->role_name }}
-                        @if($user->id != auth()->user()->id)
-                            <span><a href="#{{ $user->id }}" class="del">&times;</a></span>
-                            <form id="{{ $user->id }}" action="{{ route('user.destroy', ['user' => $user->id]) }}" method="post">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                            </form>
-                        @endif
-                    </li>
-                @endforeach
-            </ol>
         </div>
     </div>
 </div>

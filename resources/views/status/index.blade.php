@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Типы бумаг</title>
+    <title>Статусы заказа</title>
     <style type="text/css">
         body {
             padding-top: 20px;
@@ -33,13 +33,13 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <p class="lead">Типы бумаг</p>
+            <p class="lead">Статусы заказа</p>
             <ol>
-                @foreach($papers as $paper)
+                @foreach($statuses as $status)
                     <li>
-                        {{ $paper->name }}
-                        <span><a href="#{{ $paper->id }}" class="del">&times;</a></span>
-                        <form id="{{ $paper->id }}" action="{{ route('paper.destroy', ['paper' => $paper->id]) }}" method="post">
+                        {{ $status->name }}
+                        <span><a href="#{{ $status->id }}" class="del">&times;</a></span>
+                        <form id="{{ $status->id }}" action="{{ route('status.destroy', ['status' => $status->id]) }}" method="post">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                         </form>
@@ -48,14 +48,14 @@
             </ol>
         </div>
         <div class="col-xs-6">
-            <form action="{{ route('paper.store') }}" method="post">
+            <form action="{{ route('status.store') }}" method="post">
                 {{ csrf_field() }}
                 {{ method_field('POST') }}
                 <div class="form-group">
-                    Добавить тип бумаги
+                    Добавить статус
                 </div>
                 <div class="form-group">
-                    <input name="name" type="text" placeholder="Новый тип бумаги" class="form-control" value="{{ old('name') }}">
+                    <input name="name" type="text" placeholder="Новый статус" class="form-control" value="{{ old('name') }}">
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Добавить" class="btn btn-info">

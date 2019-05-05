@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Типы бумаг</title>
+    <title>Услуги</title>
     <style type="text/css">
         body {
             padding-top: 20px;
@@ -33,13 +33,13 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <p class="lead">Типы бумаг</p>
+            <p class="lead">Услуги</p>
             <ol>
-                @foreach($papers as $paper)
+                @foreach($services as $service)
                     <li>
-                        {{ $paper->name }}
-                        <span><a href="#{{ $paper->id }}" class="del">&times;</a></span>
-                        <form id="{{ $paper->id }}" action="{{ route('paper.destroy', ['paper' => $paper->id]) }}" method="post">
+                        {{ $service->name }}
+                        <span><a href="#{{ $service->id }}" class="del">&times;</a></span>
+                        <form id="{{ $service->id }}" action="{{ route('service.destroy', ['service' => $service->id]) }}" method="post">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                         </form>
@@ -48,14 +48,14 @@
             </ol>
         </div>
         <div class="col-xs-6">
-            <form action="{{ route('paper.store') }}" method="post">
+            <form action="{{ route('service.store') }}" method="post">
                 {{ csrf_field() }}
                 {{ method_field('POST') }}
                 <div class="form-group">
-                    Добавить тип бумаги
+                    Добавить услугу
                 </div>
                 <div class="form-group">
-                    <input name="name" type="text" placeholder="Новый тип бумаги" class="form-control" value="{{ old('name') }}">
+                    <input name="name" type="text" placeholder="Новая услуга" class="form-control" value="{{ old('name') }}">
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Добавить" class="btn btn-info">

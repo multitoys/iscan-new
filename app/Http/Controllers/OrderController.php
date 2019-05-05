@@ -10,6 +10,7 @@ use App\Models\Service;
 use App\Models\Sms;
 use App\Models\Status;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class OrderController extends Controller
 {
     public $cache_time = 60 * 60;
+    
     /**
      * Display a listing of the resource.
      *
@@ -164,7 +166,7 @@ class OrderController extends Controller
     public function downloadFile($order, $file_name)
     {
         $path = Order::FILES_DIR.'/'.$order;
-        $file = $this->__getFile($file_name, $path);
+        $file = $this->_getFile($file_name, $path);
 
         if ($file) {
             $headers = [
@@ -180,6 +182,34 @@ class OrderController extends Controller
         return back()->withErrors(['error_message' => __('navigations.document_not_found')]);
     }
 
+    public function designReport(Request $request)
+    {
+        if ($request->has('date_from') && $request->has('date_from')) {
+            $orders = Order::select(['created_at', 'price_design'])
+                            ->whereBetween('created_at', [
+                                Carbon::parse($request->date_from)->startOfDay(),
+                                Carbon::parse($request->date_to)->endOfDay(),
+                            ])->orderBy('created_at')->get();
+            
+            $dates     = [];
+            $total_sum = 0;
+            foreach ($orders as $order) {
+                $date = substr($order->created_at, 0, -9);
+                if (!isset($dates[$date])) {
+                    $dates[$date] = 0;
+                }
+                $dates[$date] += $order->price_design;
+                $total_sum    += $order->price_design;
+            }
+        }
+        
+        return view('order.design_report', [
+            'dates'     => $dates ?? null,
+            'total_sum' => $total_sum ?? null,
+            'request'   => $request,
+        ]);
+    }
+    
     public function deleteFile(Order $order, $file_name)
     {
         $path = Order::FILES_DIR.'/'.$order->id;
@@ -198,7 +228,7 @@ class OrderController extends Controller
         return response()->json(['status' => $status]);
     }
 
-    private function __getFile($file_name, $path_group)
+    private function _getFile($file_name, $path_group)
     {
         $file = $path_group.'/'.$file_name;
 

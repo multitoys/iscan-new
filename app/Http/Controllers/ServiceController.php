@@ -4,82 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return view('service.index', ['services' => Service::all()]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Service $service)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Service $service)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Service $service)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Service $service)
     {
-        //
+        $service->delete();
+        Cache::forget('services');
+        
+        return redirect(route('service.index'));
+    }
+    
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|unique:services|max:100',
+        ], [
+            'required' => 'Поле :attribute  обязательное!',
+            'unique'   => 'Поле :attribute дожно быть уникальным!',
+        ], [
+            'name' => 'Название',
+        ]);
+        
+        Service::create($request->all());
+        
+        return redirect(route('service.index'));
     }
 }

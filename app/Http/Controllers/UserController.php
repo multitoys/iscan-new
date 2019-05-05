@@ -27,6 +27,13 @@ class UserController extends Controller
             'login'    => 'required|unique:users|max:50',
             'password' => 'required|min:4',
             'role'     => 'required|numeric',
+        ], [
+            'required' => 'Поле :attribute  обязательное!',
+            'unique'   => 'Поле :attribute дожно быть уникальным!',
+            'min'      => 'Поле :attribute дожно быть минимум :min символа!',
+        ], [
+            'login'    => 'Логин',
+            'password' => 'Пароль',
         ]);
         
         User::create([

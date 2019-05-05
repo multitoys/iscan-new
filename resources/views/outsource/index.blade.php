@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Типы бумаг</title>
+    <title>Производства</title>
     <style type="text/css">
         body {
             padding-top: 20px;
@@ -33,13 +33,13 @@
     </div>
     <div class="row">
         <div class="col-xs-6">
-            <p class="lead">Типы бумаг</p>
+            <p class="lead">Производства</p>
             <ol>
-                @foreach($papers as $paper)
+                @foreach($outsources as $outsource)
                     <li>
-                        {{ $paper->name }}
-                        <span><a href="#{{ $paper->id }}" class="del">&times;</a></span>
-                        <form id="{{ $paper->id }}" action="{{ route('paper.destroy', ['paper' => $paper->id]) }}" method="post">
+                        {{ $outsource->name }} - {{ $outsource->code }}
+                        <span><a href="#{{ $outsource->id }}" class="del">&times;</a></span>
+                        <form id="{{ $outsource->id }}" action="{{ route('outsource.destroy', ['outsource' => $outsource->id]) }}" method="post">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
                         </form>
@@ -48,14 +48,17 @@
             </ol>
         </div>
         <div class="col-xs-6">
-            <form action="{{ route('paper.store') }}" method="post">
+            <form action="{{ route('outsource.store') }}" method="post">
                 {{ csrf_field() }}
                 {{ method_field('POST') }}
                 <div class="form-group">
-                    Добавить тип бумаги
+                    Добавить производство
                 </div>
                 <div class="form-group">
-                    <input name="name" type="text" placeholder="Новый тип бумаги" class="form-control" value="{{ old('name') }}">
+                    <input name="name" type="text" placeholder="Новое производство" class="form-control" value="{{ old('name') }}">
+                </div>
+                <div class="form-group">
+                    <input name="code" type="text" placeholder="Код производства" class="form-control" value="{{ old('code') }}">
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Добавить" class="btn btn-info">

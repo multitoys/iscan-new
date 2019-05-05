@@ -53,15 +53,46 @@
             background-color: white;
             border-color: black!important;
         }
+        ul.pagination {
+            margin: 0;
+        }
     </style>
     <!-- Bootstrap -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 </head>
 <body>
+
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-11">Вы авторизовались, как {{ auth()->user()->full_name }}</div>
-        <div class="col-xs-1"><a href="/?page=logout">Выйти</a></div>
+        <div class="col-xs-8">Вы авторизовались, как {{ auth()->user()->full_name }}</div>
+        @if(auth()->user()->role == \App\User::ADMIN)
+            <div class="col-xs-3">
+                <div class="dropdown">
+                    <a id="dLabel" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle">
+                        Настройки и отчеты
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li><a href="{{ route('order.design_report') }}">Отчет по дизайну</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{{ route('user.index') }}">Операторы</a></li>
+                        <li><a href="{{ route('service.index') }}">Услуги</a></li>
+                        <li><a href="{{ route('paper.index') }}">Типы бумаги</a></li>
+                        <li><a href="{{ route('outsource.index') }}">Производства</a></li>
+                        <li><a href="{{ route('status.index') }}">Статусы заказов</a></li>
+                    </ul>
+                </div>
+            </div>
+        @endif
+        <div class="col-xs-1">
+            <a class="btn btn-default" href="{{ route('logout') }}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Выйти
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </div>
     </div>
 </div>
 <div class="container-fluid">

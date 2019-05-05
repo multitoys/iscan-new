@@ -16,7 +16,7 @@ class PaperController extends Controller
     public function destroy(Paper $paper)
     {
         $paper->delete();
-        Cache::forget('paper');
+        Cache::forget('papers');
         
         return redirect(route('paper.index'));
     }
@@ -25,6 +25,11 @@ class PaperController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:papers|max:100',
+        ], [
+            'required' => 'Поле :attribute  обязательное!',
+            'unique'   => 'Поле :attribute дожно быть уникальным!',
+        ], [
+            'name' => 'Название',
         ]);
         
         Paper::create($request->all());
