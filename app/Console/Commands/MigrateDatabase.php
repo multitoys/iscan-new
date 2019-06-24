@@ -95,22 +95,6 @@
                 $_orders = DB::connection('old')->select('select * from `orders`');
                 $bar     = $this->output->createProgressBar(count($_orders));
                 foreach ($_orders as $_order) {
-                    if ($_order->sms1_id > 0) {
-                        $sms           = new Sms();
-                        $sms->sms_id   = $_order->sms1_id;
-                        $sms->order_id = $_order->id;
-                        $sms->type     = 1;
-                        $sms->is_sent  = 1;
-                        $sms->save();
-                    }
-                    if ($_order->sms2_id > 0) {
-                        $sms           = new Sms();
-                        $sms->sms_id   = $_order->sms2_id;
-                        $sms->order_id = $_order->id;
-                        $sms->type     = 2;
-                        $sms->is_sent  = 1;
-                        $sms->save();
-                    }
                     $order = new Order();
                     $user  = User::whereRaw('concat(last_name, " ", first_name) = "' . $_order->operator . '"')->first();
                     if ($user) {
@@ -173,6 +157,24 @@
                     }
         
                     $order->save();
+                    
+                    if ($_order->sms1_id > 0) {
+                        Sms::create([
+                            'sms_id'   => $_order->sms1_id,
+                            'order_id' => $_order->id,
+                            'type'     => 1,
+                            'is_sent'  => 1,
+                        ]);
+                    }
+                    if ($_order->sms2_id > 0) {
+                        Sms::create([
+                            'sms_id'   => $_order->sms1_id,
+                            'order_id' => $_order->id,
+                            'type'     => 2,
+                            'is_sent'  => 1,
+                        ]);
+                    }
+                    
                     $bar->advance();
                 }
                 $bar->finish();
