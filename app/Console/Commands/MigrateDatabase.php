@@ -46,7 +46,7 @@
         public function handle() {
             DB::transaction(function () {
                 $_users = DB::connection('old')->select('select * from `users`');
-                dd($_users);
+//                dd($_users);
                 foreach ($_users as $_user) {
                     User::create([
                         'login'      => $_user->login,
@@ -56,22 +56,32 @@
                         'role'       => $_user->role == 'ADMIN' ? 1 : 2,
                     ]);
                 }
+                $this->info('users complete!');
+                
                 $_statuses = DB::connection('old')->select('select * from `statuses` order by id');
                 foreach ($_statuses as $_status) {
                     Status::create(['name' => $_status->name]);
                 }
+                $this->info('statuses complete!');
+                
                 $_services = DB::connection('old')->select('select * from `servises` order by id');
                 foreach ($_services as $_service) {
                     Service::create(['name' => $_service->name]);
                 }
+                $this->info('services complete!');
+                
                 $_papers = DB::connection('old')->select('select * from `papers` order by id');
                 foreach ($_papers as $_paper) {
                     Paper::create(['name' => $_paper->name]);
                 }
+                $this->info('papers complete!');
+                
                 $_outsources = DB::connection('old')->select('select * from `outsources` order by id');
                 foreach ($_outsources as $_outsource) {
                     Outsource::create(['name' => $_outsource->name, 'code' => $_outsource->code]);
                 }
+                $this->info('outsources complete!');
+                
                 $_clients = DB::connection('old')->select('select * from `clients` order by id');
                 foreach ($_clients as $_client) {
                     Client::create([
@@ -80,23 +90,26 @@
                         'email' => $_client->email
                     ]);
                 }
+                $this->info('clients complete!');
+                
                 $_orders = DB::connection('old')->select('select * from `orders`');
+                $bar     = $this->output->createProgressBar(count($_orders));
                 foreach ($_orders as $_order) {
                     if ($_order->sms1_id > 0) {
-                        Sms::create([
-                            'sms_id'   => $_order->sms1_id,
-                            'order_id' => $_order->id,
-                            'type'     => 1,
-                            'is_sent'  => 1,
-                        ]);
+                        $sms           = new Sms();
+                        $sms->sms_id   = $_order->sms1_id;
+                        $sms->order_id = $_order->id;
+                        $sms->type     = 1;
+                        $sms->is_sent  = 1;
+                        $sms->save();
                     }
                     if ($_order->sms2_id > 0) {
-                        Sms::create([
-                            'sms_id'   => $_order->sms2_id,
-                            'order_id' => $_order->id,
-                            'type'     => 2,
-                            'is_sent'  => 1,
-                        ]);
+                        $sms           = new Sms();
+                        $sms->sms_id   = $_order->sms2_id;
+                        $sms->order_id = $_order->id;
+                        $sms->type     = 2;
+                        $sms->is_sent  = 1;
+                        $sms->save();
                     }
                     $order = new Order();
                     $user  = User::whereRaw('concat(last_name, " ", first_name) = "' . $_order->operator . '"')->first();
@@ -153,14 +166,17 @@
                     $order->comment      = $_order->comment_full;
                     $order->is_files     = $_order->files;
                     $order->created_at   = $_order->date_create;
-                    if (strlen($_order->date) == 16) {
+                    if (preg_match('/\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}/', $_order->date)) {
                         $order->date_end = $order->updated_at = Carbon::parse($_order->date);
                     } else {
                         $order->date_end = $order->updated_at = $_order->date_create;
                     }
         
                     $order->save();
+                    $bar->advance();
                 }
+                $bar->finish();
+                $this->info('orders complete!');
             });
         }
     }
