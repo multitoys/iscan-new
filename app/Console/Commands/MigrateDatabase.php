@@ -158,6 +158,7 @@
         
                     $order->save();
                     
+                    Sms::flushEventListeners();
                     if ($_order->sms1_id > 0) {
                         Sms::create([
                             'sms_id'   => $_order->sms1_id,

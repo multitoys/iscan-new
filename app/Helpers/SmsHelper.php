@@ -41,7 +41,7 @@
                 case 2:
                     $message = 'Ваш заказ №'.$order->id.' готов!Центр полиграфии,пр.Науки 7.';
                     if ($order->surcharge > 0) {
-                        $message .= 'К оплате '.$order->surcharge_formated.' грн.';
+                        $message .= 'К оплате '.$order->surcharge_formated.' грн';
                     }
                     break;
             }
