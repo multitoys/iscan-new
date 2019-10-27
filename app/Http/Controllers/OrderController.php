@@ -176,7 +176,7 @@ class OrderController extends Controller
                 'Content-Type'         => 'application/download',
                 'Content-Description'  => 'File Transfer',
             ];
-            return Storage::download($file['path'], $file['name'], $headers);
+            return Storage::download($file['path'], preg_replace('/[^\x20-\x7e]/', '_', $file['name']), $headers);
         }
 
         return back()->withErrors(['error_message' => __('navigations.document_not_found')]);
