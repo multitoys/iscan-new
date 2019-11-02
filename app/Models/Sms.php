@@ -16,6 +16,15 @@ class Sms extends Model
     const MESSAGE_IN_QUEUE      = 4;
     const MESSAGE_NOT_EXIST     = 5;
     
+    const STATUSES = [
+        'MESSAGE_UNKNOWN'       => 0,
+        'MESSAGE_IS_DELIVERED'  => 1,
+        'MESSAGE_IS_SENT'       => 2,
+        'MESSAGE_NOT_DELIVERED' => 3,
+        'MESSAGE_IN_QUEUE'      => 4,
+        'MESSAGE_NOT_EXIST'     => 5,
+    ];
+    
     protected $fillable = ['sms_id', 'order_id', 'type', 'message', 'is_sent', 'status', 'attempts'];
     
     public function getSmsStatusAttribute()

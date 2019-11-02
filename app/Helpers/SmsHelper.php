@@ -18,7 +18,7 @@
                     case 'MESSAGE_NOT_DELIVERED':
                     case 'MESSAGE_IN_QUEUE':
                     case 'MESSAGE_NOT_EXIST':
-                        $sms_status = Sms::$status;
+                        $sms_status = Sms::STATUSES[$status];
                         break;
                     default:
                         $sms_status = Sms::MESSAGE_UNKNOWN;
