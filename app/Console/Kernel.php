@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sms:delayed:send')->weekdays()->everyThirtyMinutes()->between('8:00', '20:00');
+        $schedule->command('sms:delayed:send')->everyThirtyMinutes()->between('8:00', '20:00');
     }
 
     /**

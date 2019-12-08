@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="97de5c58-ec59-4c0c-85cf-cbca8acd43d4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/SmsHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/SmsHelper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/order/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/order/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Console/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Kernel.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,37 +23,6 @@
         <option value="JavaScript File" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>$request</find>
-      <find>$order-&gt;client-&gt;</find>
-      <find>??</find>
-      <find>del-file</find>
-      <find>cre</find>
-      <find>_</find>
-      <find>prep</find>
-      <find>orders`</find>
-      <find>`orders`</find>
-      <find>Наличные</find>
-      <find>CACHE_DRIVER</find>
-      <find>status</find>
-      <find>APP_ENV</find>
-      <find>paper</find>
-      <find>sms2_id</find>
-      <find>:$stat</find>
-      <find>Sms::$</find>
-      <find>Sms::$status</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>`_orders`</replace>
-      <replace>service</replace>
-      <replace>status</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>E:\OSPanel\domains\iscan-new\app</dir>
-      <dir>E:\OSPanel\domains\iscan-new</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -233,7 +201,7 @@
       <workItem from="1572707233458" duration="534000" />
       <workItem from="1574537445214" duration="1963000" />
       <workItem from="1574539424387" duration="701000" />
-      <workItem from="1575820984463" duration="1508000" />
+      <workItem from="1575820984463" duration="2065000" />
     </task>
     <task id="LOCAL-00001" summary="add order edit">
       <created>1556651337676</created>
@@ -319,7 +287,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572176973144</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fix sms statuses">
+      <created>1575823075253</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1575823075253</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -374,7 +349,8 @@
     <MESSAGE value="all functionality migrated!" />
     <MESSAGE value="fix sms migration" />
     <MESSAGE value="fix filename fallback must only contain ASCII characters" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix filename fallback must only contain ASCII characters" />
+    <MESSAGE value="fix sms statuses" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix sms statuses" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
