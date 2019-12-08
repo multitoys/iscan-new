@@ -11,8 +11,8 @@
         public static function getStatus($sms_id)
         {
             try {
-                $status = LetsAds::status($sms_id);
-                switch ($status->description) {
+                $status = (string)LetsAds::status($sms_id)->description;
+                switch ($status) {
                     case 'MESSAGE_IS_DELIVERED':
                     case 'MESSAGE_IS_SENT':
                     case 'MESSAGE_NOT_DELIVERED':
@@ -27,7 +27,7 @@
             } catch (\Exception $e) {
                 $sms_status = Sms::MESSAGE_UNKNOWN;
             }
-    
+
             return $sms_status;
         }
 
