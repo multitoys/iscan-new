@@ -202,6 +202,7 @@
       <workItem from="1574539424387" duration="701000" />
       <workItem from="1575820984463" duration="2065000" />
       <workItem from="1575825679210" duration="100000" />
+      <workItem from="1585388263299" duration="846000" />
     </task>
     <task id="LOCAL-00001" summary="add order edit">
       <created>1556651337676</created>
@@ -294,7 +295,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575823075253</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="gitignore">
+      <created>1585388357052</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1585388357052</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -350,7 +358,8 @@
     <MESSAGE value="fix sms migration" />
     <MESSAGE value="fix filename fallback must only contain ASCII characters" />
     <MESSAGE value="fix sms statuses" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix sms statuses" />
+    <MESSAGE value="gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="gitignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
