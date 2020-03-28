@@ -10,21 +10,25 @@
     {
         public static function getStatus($sms_id)
         {
-            try {
-                $status = (string)LetsAds::status($sms_id)->description;
-                switch ($status) {
-                    case 'MESSAGE_IS_DELIVERED':
-                    case 'MESSAGE_IS_SENT':
-                    case 'MESSAGE_NOT_DELIVERED':
-                    case 'MESSAGE_IN_QUEUE':
-                    case 'MESSAGE_NOT_EXIST':
-                        $sms_status = Sms::STATUSES[$status];
-                        break;
-                    default:
-                        $sms_status = Sms::MESSAGE_UNKNOWN;
-                        break;
+            if (SmsHelper::isConnected()) {
+                try {
+                    $status = (string)LetsAds::status($sms_id)->description;
+                    switch ($status) {
+                        case 'MESSAGE_IS_DELIVERED':
+                        case 'MESSAGE_IS_SENT':
+                        case 'MESSAGE_NOT_DELIVERED':
+                        case 'MESSAGE_IN_QUEUE':
+                        case 'MESSAGE_NOT_EXIST':
+                            $sms_status = Sms::STATUSES[$status];
+                            break;
+                        default:
+                            $sms_status = Sms::MESSAGE_UNKNOWN;
+                            break;
+                    }
+                } catch (\Exception $e) {
+                    $sms_status = Sms::MESSAGE_UNKNOWN;
                 }
-            } catch (\Exception $e) {
+            } else {
                 $sms_status = Sms::MESSAGE_UNKNOWN;
             }
 
@@ -58,5 +62,18 @@
                 $sms->is_sent = true;
             }
             $sms->message = $message;
+        }
+
+        public static function isConnected()
+        {
+            $connected = @fsockopen("www.example.com", 80);
+            //website, port  (try 80 or 443)
+            if ($connected){
+                $is_conn = true; //action when connected
+                fclose($connected);
+            }else{
+                $is_conn = false; //action in connection failure
+            }
+            return $is_conn;
         }
     }
