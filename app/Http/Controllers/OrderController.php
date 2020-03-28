@@ -135,6 +135,7 @@ class OrderController extends Controller
         $order->price_design = $request->price_design;
         $order->comment      = $request->comment;
         $order->date_end     = \Carbon::parse($request->date_end);
+        $order->place        = strtoupper($request->place);
 
         if ($request->filled('client_id')) {
             $order->client_id = $request->client_id;

@@ -204,10 +204,15 @@
         </div>
         <hr>
         <div class="row">
-            <div class="col-xs-3">Дата принятия заказа</div>
-            <div class="col-xs-3">{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</div>
-            <div class="col-xs-3">Способ оплаты</div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">Дата принятия заказа</div>
+            <div id="order-date" class="col-xs-3">{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</div>
+            <div class="col-xs-1">Ячейка</div>
+            <div class="col-xs-1">
+                <input name="place" id="place" type="text" class="form-control"
+                       value="{{ $order->place }}">
+            </div>
+            <div class="col-xs-2">Способ оплаты</div>
+            <div class="col-xs-2">
                 <select name="pay_type" class="form-control">
                     <option value="1" {{ $order->pay_type == 1 ? 'selected' : '' }}>
                         Наличные
@@ -222,10 +227,34 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-3">Дата отгрузки заказа</div>
-            <div class="col-xs-3">
+            <div class="col-xs-2">Дата отгрузки заказа</div>
+            <div class="col-xs-2">
                 <input id="timepicker-actions-exmpl" name="date_end" type="text" class="form-control"
                        value="{{ isset($order->date_end) ? \Carbon::parse($order->date_end)->format('d.m.Y H:i') : '' }}">
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="add" data-add="1" data-period="hours">1 ч</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="add" data-add="2" data-period="hours">2 ч</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="add" data-add="3" data-period="hours">3 ч</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="set" data-time="18" data-period="evening">Вечер</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="set" data-time="10" data-period="morning">Утро</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="add" data-add="1" data-period="days">1 д</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="add" data-add="4" data-period="days">4 д</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="add-time btn btn-warning" data-type="add" data-add="7" data-period="days">7 д</a>
             </div>
         </div>
         <hr>
@@ -390,6 +419,7 @@
 <script src="{{ asset('js/jquery.js') }}" defer></script>
 <script src="{{ asset('js/datepicker.js') }}" defer></script>
 <script src="{{ asset('js/bootstrap.js') }}" defer></script>
-<script src="{{ asset('js/script.js') }}?v_1.11" defer></script>
+<script src="{{ asset('js/moment.min.js') }}" defer></script>
+<script src="{{ asset('js/script.js') }}?v_1.12" defer></script>
 </body>
 </html>

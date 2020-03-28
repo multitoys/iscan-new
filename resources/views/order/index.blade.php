@@ -132,6 +132,7 @@
             <th>Клиент</th>
             <th>Услуга</th>
             <th>Комментарий</th>
+            <th>Яч.</th>
             <th><span class="glyphicon glyphicon-floppy-disk"></span></th>
             <th>Дата заказа</th>
             <th>Дата отгрузки</th>
@@ -173,6 +174,7 @@
             <td>{{ $order->client->name ?? '' }}</td>
             <td>{{ $order->service->name ?? '' }}</td>
             <td>{{ $order->comment }}</td>
+            <td>{{ $order->place }}</td>
             <td>@if($order->is_files) <span class="glyphicon glyphicon-ok"></span> @endif</td>
             <td>{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</td>
             <td>{{ \Carbon::parse($order->date_end)->format('d.m.Y H:i') }}</td>

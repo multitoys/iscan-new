@@ -47,7 +47,6 @@
         public function handle() {
             DB::transaction(function () {
                 $_users = DB::connection('old')->select('select * from `users`');
-//                dd($_users);
                 foreach ($_users as $_user) {
                     User::create([
                         'login'      => $_user->login,

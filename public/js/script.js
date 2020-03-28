@@ -341,4 +341,25 @@ $(document).ready(function () {
 			$('[name="outsource_id"]').hide(100);
 		}
 	});
+    $('.add-time').on('click', function () {
+        const dateFormat = 'DD.MM.YYYY HH:mm';
+
+        let date = moment($('#order-date').text(), dateFormat);
+        switch ($(this).data('type')) {
+            case 'add':
+                date.add($(this).data('add'), $(this).data('period'));
+                break;
+            case 'set':
+                switch ($(this).data('period')) {
+                    case 'evening':
+                        date.hours(parseInt($(this).data('time'))).minutes(0);
+                        break;
+                    case 'morning':
+                        date.add(1, 'days').hours(parseInt($(this).data('time'))).minutes(0);
+                        break;
+                }
+                break;
+        }
+        $('#timepicker-actions-exmpl').val(date.format(dateFormat));
+    });
 });
