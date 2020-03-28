@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class OrderController extends Controller
 {
     public $cache_time = 60 * 60;
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +47,7 @@ class OrderController extends Controller
         $users    = Cache::remember('users', $this->cache_time, function () {
             return User::all();
         });
-        
+
         return view('order.index', [
             'statuses' => $statuses,
             'users'    => $users,
@@ -93,7 +93,7 @@ class OrderController extends Controller
         $users      = Cache::remember('users', $this->cache_time, function () {
             return User::all();
         });
-        
+
         return view('order.edit', [
             'order'      => $order,
             'outsources' => $outsources,
@@ -120,9 +120,9 @@ class OrderController extends Controller
             }
             $order->is_files = true;
         }
-    
+
         $order->user_id      = $request->user_id;
-        $order->status_id    = $request->status_id;
+        $order->status_id    = $request->has('sms2') && $order->client_id ? Status::STATUS_DONE : $request->status_id;
         $order->outsource_id = $request->filled('outsource_id') ? $request->outsource_id : null;
         $order->service_id   = $request->service_id;
         $order->paper_id     = $request->paper_id;
@@ -162,7 +162,7 @@ class OrderController extends Controller
 
         return redirect(route('order.index'));
     }
-    
+
     public function downloadFile($order, $file_name)
     {
         $path = Order::FILES_DIR.'/'.$order;
@@ -190,7 +190,7 @@ class OrderController extends Controller
                                 Carbon::parse($request->date_from)->startOfDay(),
                                 Carbon::parse($request->date_to)->endOfDay(),
                             ])->orderBy('created_at')->get();
-            
+
             $dates     = [];
             $total_sum = 0;
             foreach ($orders as $order) {
@@ -202,14 +202,14 @@ class OrderController extends Controller
                 $total_sum    += $order->price_design;
             }
         }
-        
+
         return view('order.design_report', [
             'dates'     => $dates ?? null,
             'total_sum' => $total_sum ?? null,
             'request'   => $request,
         ]);
     }
-    
+
     public function deleteFile(Order $order, $file_name)
     {
         $path = Order::FILES_DIR.'/'.$order->id;
