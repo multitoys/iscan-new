@@ -122,7 +122,7 @@ class OrderController extends Controller
         }
 
         $order->user_id      = $request->user_id;
-        $order->status_id    = $request->has('sms2') && $order->client_id ? Status::STATUS_DONE : $request->status_id;
+        $order->status_id    = $request->has('sms2') ? Status::STATUS_DONE : $request->status_id;
         $order->outsource_id = $request->filled('outsource_id') ? $request->outsource_id : null;
         $order->service_id   = $request->service_id;
         $order->paper_id     = $request->paper_id;
