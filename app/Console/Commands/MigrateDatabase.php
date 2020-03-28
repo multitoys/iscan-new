@@ -1,7 +1,7 @@
 <?php
-    
+
     namespace App\Console\Commands;
-    
+
     use App\Models\Client;
     use App\Models\Order;
     use App\Models\Outsource;
@@ -12,8 +12,9 @@
     use App\User;
     use Carbon\Carbon;
     use Illuminate\Console\Command;
+    use Illuminate\Support\Facades\Cache;
     use Illuminate\Support\Facades\DB;
-    
+
     class MigrateDatabase extends Command {
         /**
          * The name and signature of the console command.
@@ -21,14 +22,14 @@
          * @var string
          */
         protected $signature = 'db:migrate';
-        
+
         /**
          * The console command description.
          *
          * @var string
          */
         protected $description = 'Migrate old database in new database';
-        
+
         /**
          * Create a new command instance.
          *
@@ -37,7 +38,7 @@
         public function __construct() {
             parent::__construct();
         }
-        
+
         /**
          * Execute the console command.
          *
@@ -57,31 +58,31 @@
                     ]);
                 }
                 $this->info('users complete!');
-                
+
                 $_statuses = DB::connection('old')->select('select * from `statuses` order by id');
                 foreach ($_statuses as $_status) {
                     Status::create(['name' => $_status->name]);
                 }
                 $this->info('statuses complete!');
-                
+
                 $_services = DB::connection('old')->select('select * from `servises` order by id');
                 foreach ($_services as $_service) {
                     Service::create(['name' => $_service->name]);
                 }
                 $this->info('services complete!');
-                
+
                 $_papers = DB::connection('old')->select('select * from `papers` order by id');
                 foreach ($_papers as $_paper) {
                     Paper::create(['name' => $_paper->name]);
                 }
                 $this->info('papers complete!');
-                
+
                 $_outsources = DB::connection('old')->select('select * from `outsources` order by id');
                 foreach ($_outsources as $_outsource) {
                     Outsource::create(['name' => $_outsource->name, 'code' => $_outsource->code]);
                 }
                 $this->info('outsources complete!');
-                
+
                 $_clients = DB::connection('old')->select('select * from `clients` order by id');
                 foreach ($_clients as $_client) {
                     Client::create([
@@ -91,12 +92,22 @@
                     ]);
                 }
                 $this->info('clients complete!');
-                
+
                 $_orders = DB::connection('old')->select('select * from `orders`');
                 $bar     = $this->output->createProgressBar(count($_orders));
                 foreach ($_orders as $_order) {
                     $order = new Order();
                     $user  = User::whereRaw('concat(last_name, " ", first_name) = "' . $_order->operator . '"')->first();
+                    if (!$user && $_order->operator) {
+                        $user = User::create([
+                            'login'      => uniqid(),
+                            'last_name'  => explode(' ', $_order->operator)[0],
+                            'first_name' => explode(' ', $_order->operator)[1],
+                            'password'   => bcrypt(uniqid()),
+                            'role'       => 2,
+                            'is_active'  => false,
+                        ]);
+                    }
                     if ($user) {
                         $order->user_id = $user->id;
                     }
@@ -155,9 +166,9 @@
                     } else {
                         $order->date_end = $order->updated_at = $_order->date_create;
                     }
-        
+
                     $order->save();
-                    
+
                     Sms::flushEventListeners();
                     if ($_order->sms1_id > 0) {
                         Sms::create([
@@ -175,9 +186,15 @@
                             'is_sent'  => 1,
                         ]);
                     }
-                    
+
                     $bar->advance();
                 }
+                Cache::forget('outsources');
+                Cache::forget('services');
+                Cache::forget('statuses');
+                Cache::forget('papers');
+                Cache::forget('users');
+
                 $bar->finish();
                 $this->info('orders complete!');
             });

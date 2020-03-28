@@ -10,17 +10,18 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('user.index', ['users' => User::all()]);
+        return view('user.index', ['users' => User::orderByDesc('is_active')->get()]);
     }
-    
+
     public function destroy(User $user)
     {
-        $user->delete();
+        $user->is_active = false;
+        $user->save();
         Cache::forget('users');
-        
+
         return redirect(route('user.index'));
     }
-    
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -35,7 +36,7 @@ class UserController extends Controller
             'login'    => 'Логин',
             'password' => 'Пароль',
         ]);
-        
+
         User::create([
             'login'      => $request->login,
             'password'   => bcrypt($request->password),
@@ -43,7 +44,7 @@ class UserController extends Controller
             'first_name' => $request->first_name,
             'role'       => $request->role,
         ]);
-        
+
         return redirect(route('user.index'));
     }
 }

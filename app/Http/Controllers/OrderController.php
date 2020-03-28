@@ -44,13 +44,13 @@ class OrderController extends Controller
         $statuses = Cache::remember('statuses', $this->cache_time, function () {
             return Status::all();
         });
-        $users    = Cache::remember('users', $this->cache_time, function () {
-            return User::all();
+        $usersActive    = Cache::remember('users', $this->cache_time, function () {
+            return User::active()->get();
         });
 
         return view('order.index', [
             'statuses' => $statuses,
-            'users'    => $users,
+            'users'    => $usersActive,
             'orders'   => $orders,
             'request'  => $request,
         ]);
@@ -78,20 +78,20 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        $outsources = Cache::remember('outsources', $this->cache_time, function () {
+        $outsources  = Cache::remember('outsources', $this->cache_time, function () {
             return Outsource::all();
         });
-        $services   = Cache::remember('services', $this->cache_time, function () {
+        $services    = Cache::remember('services', $this->cache_time, function () {
             return Service::all();
         });
-        $statuses   = Cache::remember('statuses', $this->cache_time, function () {
+        $statuses    = Cache::remember('statuses', $this->cache_time, function () {
             return Status::all();
         });
-        $papers     = Cache::remember('papers', $this->cache_time, function () {
+        $papers      = Cache::remember('papers', $this->cache_time, function () {
             return Paper::all();
         });
-        $users      = Cache::remember('users', $this->cache_time, function () {
-            return User::all();
+        $usersActive = Cache::remember('users', $this->cache_time, function () {
+            return User::active()->get();
         });
 
         return view('order.edit', [
@@ -100,7 +100,7 @@ class OrderController extends Controller
             'services'   => $services,
             'statuses'   => $statuses,
             'papers'     => $papers,
-            'users'      => $users,
+            'users'      => $usersActive,
         ]);
     }
 

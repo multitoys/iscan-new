@@ -36,9 +36,9 @@
             <p class="lead">Операторы</p>
             <ol>
                 @foreach($users as $user)
-                    <li>
+                    <li @if(!$user->is_active) class="text-muted" @endif>
                         {{ $user->full_name }} ({{ $user->login }}) - {{ $user->role_name }}
-                        @if($user->id != auth()->user()->id)
+                        @if($user->id != auth()->user()->id && $user->is_active)
                             <span><a href="#{{ $user->id }}" class="del">&times;</a></span>
                             <form id="{{ $user->id }}" action="{{ route('user.destroy', ['user' => $user->id]) }}" method="post">
                                 {{ csrf_field() }}

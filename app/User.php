@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'login', 'password', 'last_name', 'first_name', 'role'
+        'login', 'password', 'last_name', 'first_name', 'role', 'is_active'
     ];
 
     /**
@@ -35,12 +35,17 @@ class User extends Authenticatable
         if ($this->role == self::ADMIN) {
             return 'ADMIN';
         };
-    
+
         return 'OPERATOR';
     }
 
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function scopeActive($query)
+    {
+        $query->whereIsActive(true);
     }
 }
