@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97de5c58-ec59-4c0c-85cf-cbca8acd43d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/database/migrations/2020_03_28_140415_add_place_field_to_orders_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/moment.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Console/Commands/MigrateDatabase.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Console/Commands/MigrateDatabase.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Helpers/SmsHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/SmsHelper.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/order/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/order/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/order/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/order/index.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -209,7 +204,7 @@
       <workItem from="1574539424387" duration="701000" />
       <workItem from="1575820984463" duration="2065000" />
       <workItem from="1575825679210" duration="100000" />
-      <workItem from="1585388263299" duration="9582000" />
+      <workItem from="1585388263299" duration="10983000" />
     </task>
     <task id="LOCAL-00001" summary="add order edit">
       <created>1556651337676</created>
@@ -344,7 +339,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585396496914</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add date buttons">
+      <created>1585401146934</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1585401146934</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -406,7 +408,8 @@
     <MESSAGE value="set order status to done when sms2 sent" />
     <MESSAGE value="fix order status to done when sms2 sent" />
     <MESSAGE value="fix deleting users" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix deleting users" />
+    <MESSAGE value="add date buttons" />
+    <option name="LAST_COMMIT_MESSAGE" value="add date buttons" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

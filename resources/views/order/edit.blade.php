@@ -205,14 +205,14 @@
         <hr>
         <div class="row">
             <div class="col-xs-2">Дата принятия заказа</div>
-            <div id="order-date" class="col-xs-3">{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</div>
+            <div class="col-xs-3" id="order-date" class="col-xs-3">{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</div>
             <div class="col-xs-1">Ячейка</div>
             <div class="col-xs-1">
                 <input name="place" id="place" type="text" class="form-control"
                        value="{{ $order->place }}">
             </div>
             <div class="col-xs-2">Способ оплаты</div>
-            <div class="col-xs-2">
+            <div class="col-xs-3">
                 <select name="pay_type" class="form-control">
                     <option value="1" {{ $order->pay_type == 1 ? 'selected' : '' }}>
                         Наличные
