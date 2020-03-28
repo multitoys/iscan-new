@@ -36,10 +36,10 @@
             $order = Order::findOrFail($sms->order_id);
             switch ($sms->type) {
                 case 1:
-                    $message = 'Ваш заказ №'.$order->id.' принят. Центр полиграфии, пр. Науки,7, тел 0671066500';
+                    $message = 'Ваш заказ №'.$order->id.' принят. Выдача 15-16:30, тел 0671066500';
                     break;
                 case 2:
-                    $message = 'Ваш заказ №'.$order->id.' готов!Центр полиграфии,пр.Науки 7.';
+                    $message = 'Ваш заказ №'.$order->id.' готов! Выдача 15-16:30';
                     if ($order->surcharge > 0) {
                         $message .= 'К оплате '.$order->surcharge_formated.' грн';
                     }
