@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97de5c58-ec59-4c0c-85cf-cbca8acd43d4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Helpers/SmsHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/SmsHelper.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -204,7 +203,7 @@
       <workItem from="1575820984463" duration="2065000" />
       <workItem from="1575825679210" duration="100000" />
       <workItem from="1585388263299" duration="11212000" />
-      <workItem from="1585402920774" duration="695000" />
+      <workItem from="1585402920774" duration="935000" />
     </task>
     <task id="LOCAL-00001" summary="add order edit">
       <created>1556651337676</created>
@@ -353,7 +352,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585402370091</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="fix internet cionnection check">
+      <created>1585403694574</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1585403694574</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,7 +422,8 @@
     <MESSAGE value="fix deleting users" />
     <MESSAGE value="add date buttons" />
     <MESSAGE value="change sms texts" />
-    <option name="LAST_COMMIT_MESSAGE" value="change sms texts" />
+    <MESSAGE value="fix internet cionnection check" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix internet cionnection check" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

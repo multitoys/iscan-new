@@ -53,7 +53,9 @@
             }
 
             try {
-                $send = LetsAds::send($message, env('LETSADS_SENDER'), '38' . $order->client->phone);
+                if (SmsHelper::isConnected()) {
+                    $send = LetsAds::send($message, env('LETSADS_SENDER'), '38' . $order->client->phone);
+                }
             } catch (\Exception $e) {
             }
 
