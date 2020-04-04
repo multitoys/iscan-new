@@ -420,6 +420,6 @@
 <script src="{{ asset('js/datepicker.js') }}" defer></script>
 <script src="{{ asset('js/bootstrap.js') }}" defer></script>
 <script src="{{ asset('js/moment.min.js') }}" defer></script>
-<script src="{{ asset('js/script.js') }}?v_1.12" defer></script>
+<script src="{{ asset('js/script.js') }}?v_1.13" defer></script>
 </body>
 </html>

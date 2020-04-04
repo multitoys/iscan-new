@@ -229,6 +229,9 @@ $(function () {
                     if (response.success) {
                         $wrapper.css('display', 'block');
                         $liveSearch.html(response.content);
+                    } else {
+                        $liveSearch.html('');
+                        $wrapper.css('display', 'none');
                     }
                 }
             });
@@ -249,6 +252,9 @@ $(function () {
                     if (response.success) {
                         $wrapper.css('display', 'block');
                         $emailSearch.html(response.content);
+                    } else {
+                        $liveSearch.html('');
+                        $wrapper.css('display', 'none');
                     }
                 }
             });
@@ -269,6 +275,9 @@ $(function () {
                     if (response.success) {
                         $wrapper.css('display', 'block');
                         $clientSearch.html(response.content);
+                    } else {
+                        $liveSearch.html('');
+                        $wrapper.css('display', 'none');
                     }
                 }
             });
