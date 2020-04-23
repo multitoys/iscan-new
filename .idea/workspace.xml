@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97de5c58-ec59-4c0c-85cf-cbca8acd43d4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/OrderController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/order/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/order/edit.blade.php" afterDir="false" />
     </list>

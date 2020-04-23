@@ -139,8 +139,11 @@ class OrderController extends Controller
 
         if ($request->filled('client_id')) {
             $order->client_id = $request->client_id;
+            Client::find($request->client_id)->update(
+                ['name'  => $request->client, 'email' => $request->email]
+            );
         } elseif ($request->filled('phone')) {
-            $client = Client::updateOrCreate (
+            $client = Client::updateOrCreate(
                 ['phone' => $request->phone],
                 ['name'  => $request->client, 'email' => $request->email]
             );

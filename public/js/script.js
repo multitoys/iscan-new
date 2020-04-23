@@ -253,7 +253,7 @@ $(function () {
                         $wrapper.css('display', 'block');
                         $emailSearch.html(response.content);
                     } else {
-                        $liveSearch.html('');
+                        $emailSearch.html('');
                         $wrapper.css('display', 'none');
                     }
                 }
@@ -276,7 +276,7 @@ $(function () {
                         $wrapper.css('display', 'block');
                         $clientSearch.html(response.content);
                     } else {
-                        $liveSearch.html('');
+                        $clientSearch.html('');
                         $wrapper.css('display', 'none');
                     }
                 }
