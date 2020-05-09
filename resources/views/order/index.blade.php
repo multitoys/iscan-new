@@ -20,17 +20,34 @@
         .btn-making {
             background-color: darkorange;
         }
-        div.true, div.false {
+        div.status {
+            position: relative;
             border-radius: 50%;
             width: 12px;
-            border: 6px solid;
+            border: 6px solid white;
             height: 12px;
             margin: auto;
         }
-        div.true {
+        div.status::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            width: 12px;
+            border: 1px solid black;
+            height: 12px;
+            top: -6px;
+            right: -6px;
+        }
+        div.sms-status-default {
+            border-color: white;
+        }
+        div.sms-status-sent {
+            border-color: yellow;
+        }
+        div.sms-status-delivered {
             border-color: lightgreen;
         }
-        div.false {
+        div.sms-status-not-delivered {
             border-color: red;
         }
         .back-red {
@@ -179,8 +196,8 @@
             <td>{{ \Carbon::parse($order->created_at)->format('d.m.Y H:i') }}</td>
             <td>{{ \Carbon::parse($order->date_end)->format('d.m.Y H:i') }}</td>
             <td>{{ isset($order->user) ? $order->user->full_name : '' }}</td>
-            <td><div class="{{ isset($order->sms1) ? 'true' : 'false' }}"></div></td>
-            <td><div class="{{ isset($order->sms2) ? 'true' : 'false' }}"></div></td>
+            <td><div class="status {{ isset($order->sms1) ? $order->sms1->status_css : 'sms-status-default' }}"></div></td>
+            <td><div class="status {{ isset($order->sms2) ? $order->sms2->status_css : 'sms-status-default'}}"></div></td>
             <td>
                 {{ $order->status->name ?? '' }}
                 @if($order->status_id == 4)

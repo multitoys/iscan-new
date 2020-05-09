@@ -40,30 +40,30 @@
             $order = Order::findOrFail($sms->order_id);
             switch ($sms->type) {
                 case 1:
-                    $message = 'Ваш заказ №'.$order->id.' принят.Выдача 15-16:30,пр.Науки,7,тел 0671066500';
+                    $sms->message = 'Ваш заказ №'.$order->id.' принят.Выдача 15-16:30,пр.Науки,7,тел 0671066500';
                     break;
                 case 2:
-                    $message = 'Ваш заказ №'.$order->id.' готов!Выдача 15-16:30.';
+                    $sms->message = 'Ваш заказ №'.$order->id.' готов!Выдача 15-16:30.';
                     if ($order->surcharge > 0) {
-                        $message .= 'К оплате '.$order->surcharge_formated.' грн';
+                        $sms->message .= 'К оплате '.$order->surcharge_formated.' грн';
                     } else {
-                        $message .= 'Центр Полиграфии,пр.Науки,7';
+                        $sms->message .= 'Центр Полиграфии,пр.Науки,7';
                     }
                     break;
             }
 
             try {
                 if (SmsHelper::isConnected()) {
-                    $send = LetsAds::send($message, env('LETSADS_SENDER'), '38' . $order->client->phone);
+                    $send = LetsAds::send($sms->message, env('LETSADS_SENDER'), '38' . $order->client->phone);
                 }
             } catch (\Exception $e) {
+                info($e->getMessage());
             }
 
             if (isset($send->sms_id)) {
                 $sms->sms_id  = $send->sms_id;
                 $sms->is_sent = true;
             }
-            $sms->message = $message;
         }
 
         public static function isConnected()

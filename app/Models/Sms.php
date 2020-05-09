@@ -17,12 +17,12 @@ class Sms extends Model
     const MESSAGE_NOT_EXIST     = 5;
 
     const STATUSES = [
-        'MESSAGE_UNKNOWN'       => 0,
-        'MESSAGE_IS_DELIVERED'  => 1,
-        'MESSAGE_IS_SENT'       => 2,
-        'MESSAGE_NOT_DELIVERED' => 3,
-        'MESSAGE_IN_QUEUE'      => 4,
-        'MESSAGE_NOT_EXIST'     => 5,
+        'MESSAGE_UNKNOWN'       => self::MESSAGE_UNKNOWN,
+        'MESSAGE_IS_DELIVERED'  => self::MESSAGE_IS_DELIVERED,
+        'MESSAGE_IS_SENT'       => self::MESSAGE_IS_SENT,
+        'MESSAGE_NOT_DELIVERED' => self::MESSAGE_NOT_DELIVERED,
+        'MESSAGE_IN_QUEUE'      => self::MESSAGE_IN_QUEUE,
+        'MESSAGE_NOT_EXIST'     => self::MESSAGE_NOT_EXIST,
     ];
 
     protected $fillable = ['sms_id', 'order_id', 'type', 'message', 'is_sent', 'status', 'attempts'];
@@ -72,6 +72,22 @@ class Sms extends Model
         }
 
         return $sms_status;
+    }
+
+    public function getStatusCssAttribute()
+    {
+        if (!$this->is_sent) {
+            return 'sms-status-default';
+        }
+
+        switch ($this->status) {
+            case self::MESSAGE_IS_DELIVERED:
+                return 'sms-status-delivered';
+            case self::MESSAGE_NOT_DELIVERED:
+                return 'sms-status-not-delivered';
+            default:
+                return 'sms-status-sent';
+        }
     }
 
     public function scopeSent($query)
