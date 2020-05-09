@@ -73,6 +73,31 @@
         ul.pagination {
             margin: 0;
         }
+        .blink {
+            animation-name: blink;
+            animation-iteration-count: infinite;
+            animation-timing-function:linear;
+            animation-duration: 0.8s;
+            -webkit-animation-name: blink;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function:linear;
+            -webkit-animation-duration: 0.8s;
+        }
+        @keyframes blink {
+            /*from { background-color: transparent; }*/
+            to {
+                background-color: transparent;
+                color: red;
+            }
+        }
+
+        @-webkit-keyframes blink {
+            /*from { background-color: transparent; }*/
+            to {
+                background-color: transparent;
+                color: red;
+            }
+        }
     </style>
     <!-- Bootstrap -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
@@ -161,32 +186,31 @@
         </tr>
         </thead>
         @forelse ($orders as $order)
+            <tr class="{{ $order->blink || $order->firstOrder ? 'blink ' : ' ' }}
             @switch ($order->status_id)
                 @case (1)
-                    <tr class="btn-danger">
+                    btn-danger
                     @break
                 @case (2)
-                    <tr class="btn-warning">
+                    btn-warning
                     @break
                 @case (3)
-                    <tr class="btn-info">
+                    btn-info
                     @break
                 @case (4)
-                    <tr class="btn-making">
+                    btn-making
                     @break
                 @case (5)
-                    <tr class="btn-success">
+                    btn-success
                     @break
                 @case (6)
-                    <tr class="btn-default">
+                    btn-default
                     @break
                 @case (7)
-                    <tr class="btn-cansel">
-                    @break
-                @default
-                    <tr>
+                    btn-cansel
                     @break
             @endswitch
+            ">
             <td>{{ $order->id }}&nbsp;<a class="" href="{{ route('order.edit', ['order' => $order->id]) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
             <td>{{ $order->client->name ?? '' }}</td>
             <td>{{ $order->service->name ?? '' }}</td>

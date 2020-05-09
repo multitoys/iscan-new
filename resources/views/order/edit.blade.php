@@ -229,7 +229,7 @@
         <div class="row">
             <div class="col-xs-2">Дата отгрузки заказа</div>
             <div class="col-xs-2">
-                <input id="timepicker-actions-exmpl" name="date_end" type="text" class="form-control"
+                <input id="timepicker-actions-exmpl" name="date_end" type="text" class="form-control" autocomplete="off"
                        value="{{ isset($order->date_end) ? \Carbon::parse($order->date_end)->format('d.m.Y H:i') : '' }}">
             </div>
             <div class="col-xs-1">

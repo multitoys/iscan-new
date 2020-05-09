@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
@@ -27,20 +28,28 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = Order::with(['user', 'status', 'client', 'service', 'outsource', 'sms1', 'sms2'])
-                        ->when($request->filled('user'), function ($query) use ($request) {
-                            return $query->where('user_id', $request->user);
-                        })
-                        ->when($request->filled('status'), function ($query) use ($request) {
-                            return $query->where('status_id', $request->status);
-                        })
-                        ->when($request->filled('client'), function ($query) use ($request) {
-                            return $query->whereHas('client', function ($query) use ($request) {
-                                $query->where('name', 'like', "%".$request->client."%")
-                                    ->orWhere('email', 'like', "%".$request->client."%")
-                                    ->orWhere('phone', 'like', '%'.$request->client."%");
-                            });
-                        })
-                        ->orderByDesc('id')->paginate(50);
+            ->select([
+                '*',
+                DB::raw('((SUBTIME(date_end, "1 00:00:00") < NOW()) and status_id = 4) as firstOrder'),
+                DB::raw('((SUBTIME(date_end, "0 00:30:00") < NOW()) and status_id in (1,2,3)) as blink'),
+            ])
+            ->when($request->filled('user'), function ($query) use ($request) {
+                return $query->where('user_id', $request->user);
+            })
+            ->when($request->filled('status'), function ($query) use ($request) {
+                return $query->where('status_id', $request->status);
+            })
+            ->when($request->filled('client'), function ($query) use ($request) {
+                return $query->whereHas('client', function ($query) use ($request) {
+                    $query->where('name', 'like', "%" . $request->client . "%")
+                        ->orWhere('email', 'like', "%" . $request->client . "%")
+                        ->orWhere('phone', 'like', '%' . $request->client . "%");
+                });
+            })
+            ->orderByDesc('firstOrder')
+            ->orderByDesc('id')
+            ->paginate(50);
+
         $statuses = Cache::remember('statuses', $this->cache_time, function () {
             return Status::all();
         });
