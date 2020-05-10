@@ -40,11 +40,11 @@ class SendDelayedSms extends Command
      */
     public function handle()
     {
-        $messsages = Sms::where('is_sent', false)->where('attempts', '<', Sms::MAX_ATTEMPTS)
+        $messages = Sms::where('is_sent', false)->where('attempts', '<', Sms::MAX_ATTEMPTS)
                         ->with('order.client')->get();
 
-        if (count($messsages)) {
-            foreach ($messsages as $sms) {
+        if (count($messages)) {
+            foreach ($messages as $sms) {
                 SmsHelper::sendSms($sms);
                 $sms->attempts++;
                 $sms->save();
