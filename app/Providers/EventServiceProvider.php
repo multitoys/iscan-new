@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Listeners\RecordEntryLog;
 use App\Listeners\SendEmailLockoutNotification;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         Lockout::class => [
             SendEmailLockoutNotification::class,
+        ],
+        Login::class => [
+            RecordEntryLog::class,
         ]
     ];
 

@@ -122,6 +122,7 @@
                         <li><a href="{{ route('paper.index') }}">Типы бумаги</a></li>
                         <li><a href="{{ route('outsource.index') }}">Производства</a></li>
                         <li><a href="{{ route('status.index') }}">Статусы заказов</a></li>
+                        <li><a href="{{ route('entry_log.index') }}">Логи входов</a></li>
                     </ul>
                 </div>
             </div>

@@ -15,7 +15,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
     Route::get('client/search', 'ClientController@searchClients')->name('client.search');
-    
+
     Route::resource('outsource', 'OutsourceController', ['only' => [
         'index', 'store', 'destroy'
     ]]);
@@ -34,10 +34,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('order/download/{order}/{file}', 'OrderController@downloadFile')->name('order.download_file');
     Route::delete('order/delete/{order}/{file}', 'OrderController@deleteFile')->name('order.delete_file');
-    
+
     Route::get('/', 'OrderController@index')->name('order.index');
     Route::get('/order/design_report', 'OrderController@designReport')->name('order.design_report');
     Route::resource('order', 'OrderController', ['except' => [
         'index', 'show', 'show', 'store', 'destroy'
     ]]);
+    Route::get('/entry_log', 'EntryLogController')->name('entry_log.index');
 });
