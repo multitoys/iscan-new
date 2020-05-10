@@ -16,6 +16,7 @@ class CreateEntryLogsTable extends Migration
         Schema::create('entry_logs', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->ipAddress('ip');
             $table->timestamps();
 
             $table->foreign('user_id')

@@ -27,6 +27,9 @@ class RecordEntryLog
      */
     public function handle(Login $event)
     {
-        EntryLog::create(['user_id' => $event->user->id]);
+        EntryLog::create([
+            'user_id' => $event->user->id,
+            'ip'      => request()->ip(),
+        ]);
     }
 }

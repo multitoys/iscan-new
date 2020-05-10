@@ -40,6 +40,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Пользователь</th>
+                    <th>IP адрес</th>
                     <th>Дата и Время входа</th>
                 </tr>
                 </thead>
@@ -48,6 +49,7 @@
                     <tr>
                         <td>{{ $log->id }}</td>
                         <td>{{ $log->user->full_name }}</td>
+                        <td>{{ $log->ip }}</td>
                         <td>{{ $log->created_at }}</td>
                     </tr>
                 @empty
