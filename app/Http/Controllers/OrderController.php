@@ -30,8 +30,8 @@ class OrderController extends Controller
         $orders = Order::with(['user', 'status', 'client', 'service', 'outsource', 'sms1', 'sms2'])
             ->select([
                 '*',
-                DB::raw('((SUBTIME(date_end, "1 00:00:00") < NOW()) and status_id = 4) as firstOrder'),
-                DB::raw('((SUBTIME(date_end, "0 00:30:00") < NOW()) and status_id in (1,2,3)) as blink'),
+                DB::raw('IF(date_end , (SUBTIME(date_end, "1 00:00:00") < NOW()) and status_id = 4, 0) as firstOrder'),
+                DB::raw('IF(date_end , (SUBTIME(date_end, "0 00:30:00") < NOW()) and status_id in (1,2,3), 0) as blink'),
             ])
             ->when($request->filled('user'), function ($query) use ($request) {
                 return $query->where('user_id', $request->user);
