@@ -41,20 +41,23 @@ class UpdateSmsStatus extends Command
     public function handle()
     {
         if (SmsHelper::isConnected()) {
-            Sms::whereIsSent(true)
+            $messages = Sms::whereIsSent(true)
                 ->where('sms_id', '>', 0)
                 ->whereStatus(Sms::MESSAGE_UNKNOWN)
                 ->orderByDesc('id')
                 ->select('id', 'sms_id')
-                ->chunk(50, function ($messages) {
-                    foreach ($messages as $sms) {
-                        $status = SmsHelper::getStatus($sms->sms_id);
-                        if ($status) {
-                            $sms->status = $status;
-                            $sms->save();
-                        }
+                ->limit(20)
+                ->get();
+            if ($messages->count()) {
+                foreach ($messages as $sms) {
+                    $status = SmsHelper::getStatus($sms->sms_id);
+                    if ($status) {
+                        $sms->status = $status;
+                        $sms->save();
+                        $this->info($sms->id, $sms->status);
                     }
-                });
+                }
+            }
         }
     }
 }
