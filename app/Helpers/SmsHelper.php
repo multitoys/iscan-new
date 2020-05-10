@@ -38,6 +38,7 @@
         public static function sendSms(Sms $sms)
         {
             $order = Order::findOrFail($sms->order_id);
+
             switch ($sms->type) {
                 case 1:
                     $sms->message = 'Ваш заказ №'.$order->id.' принят. Центр полиграфии, пр. Науки,7, тел 0671066500';
