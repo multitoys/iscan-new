@@ -40,14 +40,13 @@
             $order = Order::findOrFail($sms->order_id);
             switch ($sms->type) {
                 case 1:
-                    $sms->message = 'Ваш заказ №'.$order->id.' принят.Выдача 15-16:30,пр.Науки,7,тел 0671066500';
+                    $sms->message = 'Ваш заказ №'.$order->id.' принят. Центр полиграфии, пр. Науки,7, тел 0671066500';
                     break;
                 case 2:
-                    $sms->message = 'Ваш заказ №'.$order->id.' готов!Выдача 15-16:30.';
                     if ($order->surcharge > 0) {
-                        $sms->message .= 'К оплате '.$order->surcharge_formated.' грн';
+                        $sms->message = 'Ваш заказ №'.$order->id.' готов!Центр полиграфии,пр.Науки 7.К оплате '.$order->surcharge_formated.' грн';
                     } else {
-                        $sms->message .= 'Центр Полиграфии,пр.Науки,7';
+                        $sms->message = 'Ваш заказ №'.$order->id.' готов! Центр полиграфии, пр.Науки 7.';
                     }
                     break;
             }
