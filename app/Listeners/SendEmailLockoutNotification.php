@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Mail\LockoutMail;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
 class SendEmailLockoutNotification
@@ -29,11 +27,10 @@ class SendEmailLockoutNotification
     public function handle(Lockout $event)
     {
         try {
-            Mail::to(env('MAIL_FROM_ADDRESS'))
+            Mail::to('alarm@iscan.com.ua')
                 ->send(new LockoutMail($event->request));
         } catch (\Exception $e) {
             info($e->getMessage());
         }
-
     }
 }

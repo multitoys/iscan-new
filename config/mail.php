@@ -1,5 +1,22 @@
 <?php
 
+//return [
+//    "driver"     => "smtp",
+//    "host"       => "mx1.mirohost.net",
+//    "port"       => 465,
+//    "from"       => [
+//        "address" => "alarm@iscan.com.ua",
+//        "name"    => "Центр Полиграфии",
+//    ],
+//    "to"         => [
+//        "address" => "alarm@iscan.com.ua",
+//    ],
+//    "username"   => "alarm@iscan.com.ua",
+//    "password"   => "7142450Alm",
+//    "encryption" => "ssl",
+//    "sendmail"   => "/usr/sbin/sendmail -bs",
+//];
+
 return [
 
     /*
@@ -16,7 +33,8 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+//    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => 'smtp',
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +47,8 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+//    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => 'mx1.mirohost.net',
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +61,8 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+//    'port' => env('MAIL_PORT', 587),
+    'port' => 465,
 
     /*
     |--------------------------------------------------------------------------
@@ -55,9 +75,14 @@ return [
     |
     */
 
+//    'from' => [
+//        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+//        'name' => env('MAIL_FROM_NAME', 'Example'),
+//    ],
+
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => 'alarm@iscan.com.ua',
+        'name' => 'Центр Полиграфии',
     ],
 
     /*
@@ -71,7 +96,8 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+//    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => 'ssl',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +110,13 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'),
+//    'username' => env('MAIL_USERNAME'),
+//
+//    'password' => env('MAIL_PASSWORD'),
 
-    'password' => env('MAIL_PASSWORD'),
+    'username' => 'alarm@iscan.com.ua',
+
+    'password' => '7142450Alm',
 
     /*
     |--------------------------------------------------------------------------
