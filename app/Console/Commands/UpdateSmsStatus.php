@@ -45,7 +45,7 @@ class UpdateSmsStatus extends Command
                 ->where('sms_id', '>', 0)
                 ->whereStatus(Sms::MESSAGE_UNKNOWN)
                 ->orderByDesc('id')
-                ->select('id', 'sms_id')
+                ->select('id', 'sms_id', 'order_id', 'type')
                 ->limit(20)
                 ->get();
             if ($messages->count()) {
@@ -55,7 +55,7 @@ class UpdateSmsStatus extends Command
                         $sms->status = $status;
                         $sms->save();
                     }
-                    $this->info($sms->id.' статус: '.$status);
+                    $this->info('Заказ №'.$sms->order_id.' статус смс'.$sms->type.': '.$status);
                 }
             }
         }
