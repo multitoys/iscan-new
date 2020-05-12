@@ -54,8 +54,8 @@ class UpdateSmsStatus extends Command
                     if ($status) {
                         $sms->status = $status;
                         $sms->save();
-                        $this->info($sms->id, $sms->status);
                     }
+                    $this->info($sms->id.' статус: '.$status);
                 }
             }
         }
