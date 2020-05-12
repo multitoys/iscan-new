@@ -55,7 +55,7 @@ class UpdateSmsStatus extends Command
                         $sms->status = $status;
                         $sms->save();
                     }
-                    $this->info($sms->id.' статус: '.$status);
+                    $this->info('Заказ №'.$sms->order_id.' статус смс'.$sms->type.': '.$status);
                 }
             }
         }
