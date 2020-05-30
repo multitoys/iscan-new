@@ -400,7 +400,7 @@
                 @if($order->is_files)
                     <div class="row">
                         <ol class="file-list">
-                            @forelse(Storage::files(\App\Models\Order::FILES_DIR.'/'.$order->id) as $file)
+                            @forelse(Storage::files(\App\Models\Order::getFolder($order->id)) as $file)
 {{--                                {{ dd(pathinfo($file)) }}--}}
                                 <li data-delete="{{ route('order.delete_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}">
                                     <a href="{{ route('order.download_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}" title="Скачать {{ pathinfo($file)['basename'] }}">{{ pathinfo($file)['basename'] }}</a>

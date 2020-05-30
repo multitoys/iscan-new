@@ -126,7 +126,7 @@ class OrderController extends Controller
         if (is_array($request->file('files')) && count($request->file('files'))) {
             foreach ($request->file('files') as $file) {
                 $file_name = $file->getClientOriginalName();
-                Storage::putFileAs(Order::FILES_DIR.'/'.$order->id, $file, $file_name);
+                Storage::putFileAs(Order::getFolder($order->id), $file, $file_name);
             }
             $order->is_files = true;
         }
@@ -145,7 +145,7 @@ class OrderController extends Controller
         $order->price_design = $request->price_design;
         $order->comment      = $request->comment;
         $order->date_end     = \Carbon::parse($request->date_end);
-        $order->place        = strtoupper($request->place);
+        $order->place        = $request->place;
 
         if ($request->filled('client_id')) {
             $order->client_id = $request->client_id;
@@ -179,7 +179,7 @@ class OrderController extends Controller
 
     public function downloadFile($order, $file_name)
     {
-        $path = Order::FILES_DIR.'/'.$order;
+        $path = Order::getFolder($order);
         $file = $this->_getFile($file_name, $path);
 
         if ($file) {
@@ -226,7 +226,7 @@ class OrderController extends Controller
 
     public function deleteFile(Order $order, $file_name)
     {
-        $path = Order::FILES_DIR.'/'.$order->id;
+        $path = Order::getFolder($order->id);
         $file = $path.'/'.$file_name;
 
         $status = false;

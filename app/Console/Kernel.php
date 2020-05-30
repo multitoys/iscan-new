@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\MigrateDatabase;
+use App\Console\Commands\RenameOrderFolder;
 use App\Console\Commands\SendDelayedSms;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         SendDelayedSms::class,
-        MigrateDatabase::class
+        MigrateDatabase::class,
+        RenameOrderFolder::class,
     ];
 
     /**

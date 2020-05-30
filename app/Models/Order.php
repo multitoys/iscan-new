@@ -14,9 +14,24 @@ class Order extends Model
 
     protected $fillable = ['is_files'];
 
+    public static function getFolder($id)
+    {
+        return self::FILES_DIR.'/'.str_pad($id, 6, 0, STR_PAD_LEFT);
+    }
+
     public function getSurchargeAttribute()
     {
         return $this->amount - $this->prepayment;
+    }
+
+    public function getPlaceAttribute($value)
+    {
+        return strtoupper($value);
+    }
+
+    public function setPlaceAttribute($value)
+    {
+        $this->attributes['place'] = strtoupper(substr($value, 0, 5));
     }
 
     public function getSurchargeFormatedAttribute()
