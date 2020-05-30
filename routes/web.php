@@ -32,13 +32,13 @@ Route::middleware(['auth'])->group(function () {
         'index', 'store', 'destroy'
     ]]);
 
-    Route::get('order/download/{order}/{file}', 'OrderController@downloadFile')->name('order.download_file');
-    Route::delete('order/delete/{order}/{file}', 'OrderController@deleteFile')->name('order.delete_file');
 
     Route::get('/', 'OrderController@index')->name('order.index');
+    Route::get('file/download/{order}', 'OrderController@downloadFile')->name('file.download_file');
+    Route::delete('file/delete/{order}', 'OrderController@deleteFile')->name('file.delete_file');
     Route::get('/order/design_report', 'OrderController@designReport')->name('order.design_report');
     Route::resource('order', 'OrderController', ['except' => [
-        'index', 'show', 'show', 'store', 'destroy'
+        'index', 'show', 'store', 'destroy'
     ]]);
     Route::get('/entry_log', 'EntryLogController')->name('entry_log.index');
 });

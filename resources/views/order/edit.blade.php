@@ -405,8 +405,8 @@
                         <ol class="file-list">
                             @forelse(Storage::files(\App\Models\Order::getFolder($order->id)) as $file)
 {{--                                {{ dd(pathinfo($file)) }}--}}
-                                <li data-delete="{{ route('order.delete_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}">
-                                    <a href="{{ route('order.download_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}" title="Скачать {{ pathinfo($file)['basename'] }}">{{ pathinfo($file)['basename'] }}</a>
+                                <li data-delete="{{ route('file.delete_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}">
+                                    <a href="{{ route('file.download_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}" title="Скачать {{ pathinfo($file)['basename'] }}">{{ pathinfo($file)['basename'] }}</a>
                                     <span class="del-file" title="Удалить {{ pathinfo($file)['basename'] }}">&times;</span>
                                 </li>
                             @empty

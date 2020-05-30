@@ -177,10 +177,11 @@ class OrderController extends Controller
         return redirect(route('order.index'));
     }
 
-    public function downloadFile($order, $file_name)
+    public function downloadFile($order)
     {
-        $path = Order::getFolder($order);
-        $file = $this->_getFile($file_name, $path);
+        $file_name = request('file');
+        $path      = Order::getFolder($order);
+        $file      = $this->_getFile($file_name, $path);
 
         if ($file) {
             $headers = [
@@ -224,10 +225,11 @@ class OrderController extends Controller
         ]);
     }
 
-    public function deleteFile(Order $order, $file_name)
+    public function deleteFile(Order $order)
     {
-        $path = Order::getFolder($order->id);
-        $file = $path.'/'.$file_name;
+        $file_name = request('file');
+        $path      = Order::getFolder($order->id);
+        $file      = $path.'/'.$file_name;
 
         $status = false;
         if (Storage::exists($file)) {
