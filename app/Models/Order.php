@@ -26,12 +26,12 @@ class Order extends Model
 
     public function getPlaceAttribute($value)
     {
-        return strtoupper($value);
+        return mb_strtoupper($value);
     }
 
     public function setPlaceAttribute($value)
     {
-        $this->attributes['place'] = strtoupper(substr($value, 0, 5));
+        $this->attributes['place'] = mb_strtoupper(substr($value, 0, 5));
     }
 
     public function getSurchargeFormatedAttribute()
