@@ -47,6 +47,7 @@ class OrderController extends Controller
                 });
             })
             ->orderByDesc('firstOrder')
+            ->orderByDesc('blink')
             ->orderByDesc('id')
             ->paginate(50);
 
