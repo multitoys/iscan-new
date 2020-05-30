@@ -164,7 +164,7 @@
         </div>
         <div class="col-xs-2"><a class="btn btn-white" href="/">Обновить страницу</a> </div>
         <div class="col-xs-2">
-            <a class="btn btn-success new-order" href="{{ route('order.create') }}">Создать новый заказ</a>
+            <a class="btn btn-success btn-lg" href="{{ route('order.create') }}">Создать новый заказ</a>
         </div>
     </form>
     {{ $orders->appends($request->all())->links() }}

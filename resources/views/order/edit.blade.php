@@ -134,6 +134,9 @@
             font-size: 1.2em;
             color:red;
         }
+        .row {
+            margin-right: -10px;
+        }
     </style>
 </head>
 <body>
