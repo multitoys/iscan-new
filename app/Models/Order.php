@@ -31,7 +31,7 @@ class Order extends Model
 
     public function setPlaceAttribute($value)
     {
-        $this->attributes['place'] = mb_strtoupper(substr($value, 0, 5));
+        $this->attributes['place'] = mb_strtoupper($value);
     }
 
     public function getSurchargeFormatedAttribute()
