@@ -319,7 +319,7 @@
                         <input id="grn1" name="grn1" type="number" size="5"
                                value="{{ explode('.', $order->amount)[0] }}">.<input
                                 id="kops1" name="kops1" type="number" size="2"
-                                value="{{ count(explode('.', $order->amount)) > 1 ? explode('.', $order->amount)[1] : '00' }}">
+                                value="{{ count(explode('.', $order->amount)) > 1 ? str_pad(explode('.', $order->amount)[1], 2, 0) : '00' }}">
                     </div>
                 </div>
                 <div class="row">
@@ -329,7 +329,7 @@
                         <input id="grn2" name="grn2" type="number" size="5"
                                value="{{ explode('.', $order->prepayment)[0] }}">.<input
                                 id="kops2" name="kops2" type="number" size="2"
-                                value="{{ count(explode('.', $order->prepayment)) > 1 ? explode('.', $order->prepayment)[1] : '00' }}">
+                                value="{{ count(explode('.', $order->prepayment)) > 1 ? str_pad(explode('.', $order->prepayment)[1], 2, 0) : '00' }}">
                     </div>
                 </div>
                 <div class="row">
@@ -338,7 +338,7 @@
                         <input id="grn3" name="grn3" type="number" size="5"
                                value="{{ explode('.', $order->surcharge)[0] }}"
                                disabled>.<input id="kops3" name="kops3" type="number" size="2"
-                                                value="{{ count(explode('.', $order->surcharge)) > 1 ? explode('.', $order->surcharge)[1] : '00' }}"
+                                                value="{{ count(explode('.', $order->surcharge)) > 1 ? str_pad(explode('.', $order->surcharge)[1], 2, 0) : '00' }}"
                                                 disabled>
                     </div>
                 </div>
