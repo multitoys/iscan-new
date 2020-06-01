@@ -147,23 +147,23 @@
 <div class="container-fluid">
     <form action="{{ route('order.index') }}" method="get">
         <div class="col-xs-2">
-            <select name="status" class="form-control" data-active="{{ $request->status }}">
+            <select name="status" class="form-control" data-active="{{ request()->status }}">
                 <option value="">Bсе заказы</option>
                 @foreach($statuses as $status)
-                <option value="{{ $status->id }}" {{ $request->status == $status->id ? 'selected' : '' }}>{{ $status->name }}</option>
+                <option value="{{ $status->id }}" {{ request()->status == $status->id ? 'selected' : '' }}>{{ $status->name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-xs-2">
-            <select name="user" class="form-control" data-active="{{ $request->user }}">
+            <select name="user" class="form-control" data-active="{{ request()->user }}">
                 <option value="">Bсе операторы</option>
                 @foreach($users as $user)
-                <option value="{{ $user->id }}" {{ $request->user == $user->id ? 'selected' : '' }}>{{ $user->last_name.' '.$user->first_name }}</option>
+                <option value="{{ $user->id }}" {{ request()->user == $user->id ? 'selected' : '' }}>{{ $user->last_name.' '.$user->first_name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-xs-3">
-            <input type="text" name="client" class="form-control" placeholder="Клиент, телефон или Email" value="{{ $request->client }}">
+            <input type="text" name="client" class="form-control" placeholder="Клиент, телефон или Email" value="{{ request()->client }}">
         </div>
         <div class="col-xs-1">
             <button class="btn btn-info">ok</button>
@@ -173,7 +173,7 @@
             <a class="btn btn-success btn-lg" href="{{ route('order.create') }}">Создать новый заказ</a>
         </div>
     </form>
-    {{ $orders->appends($request->all())->links() }}
+    {{ $orders->appends(request()->all())->links() }}
     <table id="main" class="table table-condensed table-bordered">
         <thead>
         <tr>
@@ -247,7 +247,7 @@
         @empty
         @endforelse
     </table>
-    {{ $orders->appends($request->all())->links() }}
+    {{ $orders->appends(request()->all())->links() }}
 </div>
 <script src="{{ asset('js/jquery.js') }}" defer></script>
 <script src="{{ asset('js/bootstrap.js') }}" defer></script>

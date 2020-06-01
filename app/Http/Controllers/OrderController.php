@@ -27,7 +27,15 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $orders = Order::with(['user', 'status', 'client', 'service', 'outsource', 'sms1', 'sms2'])
+        $orders = Order::with([
+                'user:id,last_name,first_name',
+                'status',
+                'client',
+                'service',
+                'outsource',
+                'sms1:id,sms_id,order_id,type,is_sent,status',
+                'sms2:id,sms_id,order_id,type,is_sent,status',
+            ])
             ->select([
                 '*',
                 DB::raw('IF(date_end , (SUBTIME(date_end, "1 00:00:00") < NOW()) and status_id = 4, 0) as firstOrder'),
@@ -62,7 +70,6 @@ class OrderController extends Controller
             'statuses' => $statuses,
             'users'    => $usersActive,
             'orders'   => $orders,
-            'request'  => $request,
         ]);
     }
 
