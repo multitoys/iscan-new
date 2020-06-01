@@ -12,15 +12,15 @@ class ServiceController extends Controller
     {
         return view('service.index', ['services' => Service::all()]);
     }
-    
+
     public function destroy(Service $service)
     {
         $service->delete();
         Cache::forget('services');
-        
+
         return redirect(route('service.index'));
     }
-    
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -31,9 +31,10 @@ class ServiceController extends Controller
         ], [
             'name' => 'Название',
         ]);
-        
+
         Service::create($request->all());
-        
+        Cache::forget('services');
+
         return redirect(route('service.index'));
     }
 }

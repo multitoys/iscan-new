@@ -12,15 +12,15 @@ class PaperController extends Controller
     {
         return view('paper.index', ['papers' => Paper::all()]);
     }
-    
+
     public function destroy(Paper $paper)
     {
         $paper->delete();
         Cache::forget('papers');
-        
+
         return redirect(route('paper.index'));
     }
-    
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -31,9 +31,10 @@ class PaperController extends Controller
         ], [
             'name' => 'Название',
         ]);
-        
+
         Paper::create($request->all());
-        
+        Cache::forget('papers');
+
         return redirect(route('paper.index'));
     }
 }

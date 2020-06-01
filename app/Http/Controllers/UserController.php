@@ -44,6 +44,7 @@ class UserController extends Controller
             'first_name' => $request->first_name,
             'role'       => $request->role,
         ]);
+        Cache::forget('users');
 
         return redirect(route('user.index'));
     }

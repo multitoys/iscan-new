@@ -12,15 +12,15 @@ class StatusController extends Controller
     {
         return view('status.index', ['statuses' => Status::all()]);
     }
-    
+
     public function destroy(Status $status)
     {
         $status->delete();
         Cache::forget('statuses');
-        
+
         return redirect(route('status.index'));
     }
-    
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -31,9 +31,10 @@ class StatusController extends Controller
         ], [
             'name' => 'Название',
         ]);
-        
+
         Status::create($request->all());
-        
+        Cache::forget('statuses');
+
         return redirect(route('status.index'));
     }
 }

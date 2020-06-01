@@ -20,6 +20,12 @@
         .btn-making {
             background-color: darkorange;
         }
+        .btn-think {
+            background-color: yellow;
+        }
+        .btn-think .glyphicon-pencil {
+            color: black;
+        }
         div.status {
             position: relative;
             border-radius: 50%;
@@ -209,6 +215,9 @@
                     @break
                 @case (7)
                     btn-cansel
+                    @break
+                @case (8)
+                    btn-think
                     @break
             @endswitch
             ">

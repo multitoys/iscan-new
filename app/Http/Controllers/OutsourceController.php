@@ -12,15 +12,15 @@ class OutsourceController extends Controller
     {
         return view('outsource.index', ['outsources' => Outsource::all()]);
     }
-    
+
     public function destroy(Outsource $outsource)
     {
         $outsource->delete();
         Cache::forget('outsources');
-        
+
         return redirect(route('outsource.index'));
     }
-    
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -33,9 +33,10 @@ class OutsourceController extends Controller
             'name' => 'Название',
             'code' => 'Код',
         ]);
-        
+
         Outsource::create($request->all());
-        
+        Cache::forget('outsources');
+
         return redirect(route('outsource.index'));
     }
 }
