@@ -45,9 +45,9 @@
                     break;
                 case 2:
                     if ($order->surcharge > 0) {
-                        $sms->message = 'Заказ №'.$order->id.' готов! Fileprint.com.ua пр.Науки 7.К оплате '.$order->surcharge_formated.'грн';
+                        $sms->message = 'Заказ №'.$order->id.' готов! Fileprint.com.ua пр. Науки 7. К оплате '.$order->surcharge_formated.'грн';
                     } else {
-                        $sms->message = 'Ваш заказ №'.$order->id.' готов! Fileprint.com.ua пр.Науки 7.';
+                        $sms->message = 'Ваш заказ №'.$order->id.' готов! Fileprint.com.ua пр. Науки 7.';
                     }
                     break;
             }
