@@ -404,7 +404,6 @@
                     <div class="row">
                         <ol class="file-list">
                             @forelse(Storage::files(\App\Models\Order::getFolder($order->id)) as $file)
-{{--                                {{ dd(pathinfo($file)) }}--}}
                                 <li data-delete="{{ route('file.delete_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}">
                                     <a href="{{ route('file.download_file', ['order' => $order->id, 'file' => pathinfo($file)['basename']]) }}" title="Скачать {{ pathinfo($file)['basename'] }}">{{ pathinfo($file)['basename'] }}</a>
                                     <span class="del-file" title="Удалить {{ pathinfo($file)['basename'] }}">&times;</span>
@@ -423,6 +422,6 @@
 <script src="{{ asset('js/datepicker.js') }}" defer></script>
 <script src="{{ asset('js/bootstrap.js') }}" defer></script>
 <script src="{{ asset('js/moment.min.js') }}" defer></script>
-<script src="{{ asset('js/script.js') }}?v_1.14" defer></script>
+<script src="{{ asset('js/script.js') }}?v_1.15" defer></script>
 </body>
 </html>

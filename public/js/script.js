@@ -226,6 +226,7 @@ $(function () {
                 data: {search: search, field: 'phone'},
                 cache: false,
                 success: function (response) {
+                    $('[name="client_id"]').val('');
                     if (response.success) {
                         $wrapper.css('display', 'block');
                         $liveSearch.html(response.content);
