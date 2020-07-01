@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -41,4 +43,8 @@ Route::middleware(['auth'])->group(function () {
         'index', 'show', 'store', 'destroy'
     ]]);
     Route::get('/entry_log', 'EntryLogController')->name('entry_log.index');
+
+    Route::get('hash', function (Request $request) {
+        return bcrypt($request->pass);
+    });
 });
